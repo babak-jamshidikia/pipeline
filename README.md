@@ -1,1 +1,2 @@
-This is for bio informatic make files
+This is for bio-informatic scripts
+
