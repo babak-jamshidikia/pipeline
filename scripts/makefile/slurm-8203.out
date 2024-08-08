@@ -1,0 +1,16 @@
+----- START ----- 
+ Genome index ------>  /biodb/genomes/mus_musculus/GRCm39_107/star
+ Read 1 ----------->   /prj/2024_05_Heart/bowtie/bwt_WT_Atria_3.fastq.gz
+ Target directory ->   /prj/2024_05_Heart/star/str_WT_Atria_3
+ GTFfile ---------->   /biodb/genomes/mus_musculus/GRCm39_107/GRCm39.107.gtf
+	STAR --genomeDir /biodb/genomes/mus_musculus/GRCm39_107/star --runThreadN 5 --readFilesIn /prj/2024_05_Heart/bowtie/bwt_WT_Atria_3.fastq.gz --sjdbGTFfile /biodb/genomes/mus_musculus/GRCm39_107/GRCm39.107.gtf --readFilesCommand zcat --outFileNamePrefix /prj/2024_05_Heart/star/str_WT_Atria_3 --outSAMtype BAM SortedByCoordinate --outSAMstrandField intronMotif --genomeLoad NoSharedMemory
+	STAR version: 2.7.10a   compiled: 2022-07-23T16:05:11-07:00 :/beegfs/scratch/STAR-2.7.10a/source
+Jul 22 17:21:54 ..... started STAR run
+Jul 22 17:21:54 ..... loading genome
+Jul 22 17:22:05 ..... processing annotations GTF
+Jul 22 17:22:12 ..... inserting junctions into the genome indices
+Jul 22 17:24:54 ..... started mapping
+Jul 22 17:26:01 ..... finished mapping
+Jul 22 17:26:01 ..... started sorting BAM
+Jul 22 17:26:14 ..... finished successfully
+----- END --------------- 
