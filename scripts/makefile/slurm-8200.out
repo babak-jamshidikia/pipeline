@@ -1,5 +1,0 @@
-start
-index  =  /biodb/genomes/mus_musculus/rRNA/mmusculus.rRNA
-read1  =  /prj/2024_05_Heart/flexbar/flb_WT_Atria_3.fastq.gz
-target =  /prj/2024_05_Heart/bowtie/bwt_WT_Atria_3.fastq.gz
-end
