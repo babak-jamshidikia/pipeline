@@ -9,9 +9,7 @@
 #-----------------------------------------------------------------------------------------------
 
 library(tidyverse)
-library(limma)
 library(edgeR)
-library(org.Mm.eg.db)
 #library(xlsx)
 library(dplyr)
 #library(package = "mouse4302.db",character.only = TRUE)
