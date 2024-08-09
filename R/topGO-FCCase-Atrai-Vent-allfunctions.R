@@ -24,6 +24,8 @@ library(ggrepel)
 library(pheatmap)
 library(dendextend)
 library(viridis)
+library(Glimma)
+
 fc <- readRDS("/home/bjamshidikia/srvrdata/fcdata3.rds")
 head(fc$counts)
 head(fc)
@@ -39,23 +41,6 @@ RPKM4 <- filter_all(RPKM1,any_vars(. > 0))
 RPKM4
 
 RPKM5 <- RPKM4
-funchaetmap <- function(){
-  RPKM6 <- log10(RPKM5)
-  colnames(RPKM6) <-c("Atria_1","Atria_2","Atria_3","Vent_1","Vent_2","Vent_3") #substr(colnames(RPKM6),8,14)
-  matRPKM <- as.matrix(RPKM6)
-my_heatmap <- pheatmap(matRPKM,
-                       cluster_rows = FALSE,
-                       color = viridis(n = 2000,option = "magma"),
-#                       legend_breaks = c(-2,0,2),
-                       show_rownames = FALSE,
-                       show_colnames = TRUE,
-                       border_color = NA,
-                       main = "Atria vs Vent  \n Heatmap based on Log10(RPKM) values ",
-                       scale = "row",
-                       
-                      )
-my_heatmap
-}
 
 #class(my_heatmap)
 #names(my_heatmap)
@@ -121,6 +106,65 @@ attriby1 <- c("external_gene_name","description","ensembl_gene_id")
 #tt <- left_join(tt$table,datay1,by = c("GeneID" = "ensembl_gene_id"))
 colnames(design)
 head(tt)
+geneList1<- rep(0, times=nrow(RPKM4))
+geneList1
+
+str(geneList1)
+names(geneList1) <- row.names(RPKM4) 
+geneList1
+geneList2 <- replace(geneList1,names(geneList1) %in% tt$table$GeneID, tt$table$logFC)
+geneList2
+#github code
+
+
+
+if (!file.exists("~/Desktop/BIOINFORMATICS_jacobi/go_mapping_tmp")){
+  ensembl <- useEnsembl( biomart = "genes",dataset= "mmusculus_gene_ensembl")
+  go_annotations <- getBM(attributes = c("ensembl_gene_id", "go_id") , values =row.names(RPKM4), mart = ensembl)
+  go_annotations
+  dim(go_annotations)
+  go_annotations <- go_annotations %>%
+    group_by(ensembl_gene_id) %>%
+    mutate(go_id = paste0(go_id, collapse = ", ")) %>%
+    distinct()
+  
+  write.table(go_annotations, file = "~/Desktop/BIOINFORMATICS_jacobi/go_mapping_tmp", row.names = F, na = "", col.names = F, sep = "\t", quote = FALSE)
+}
+
+# read GO gene<>GO mappings from file
+geneID2GO <- readMappings(file = "~/Desktop/BIOINFORMATICS_jacobi/go_mapping_tmp")
+
+topDiffGenesUp <- function(allScore) {
+  return(allScore > 0)
+}
+
+topDiffGenesdown <- function(allScore) {
+  return(allScore < 0)
+}
+
+topDiffGenes <- function(allScore) {
+  return(allScore)
+}
+
+
+funchaetmap <- function(){
+  RPKM6 <- log10(RPKM5)
+  colnames(RPKM6) <-c("Atria_1","Atria_2","Atria_3","Vent_1","Vent_2","Vent_3") #substr(colnames(RPKM6),8,14)
+  matRPKM <- as.matrix(RPKM6)
+  my_heatmap <- pheatmap(matRPKM,
+                         cluster_rows = FALSE,
+                         color = viridis(n = 2000,option = "magma"),
+                         #                       legend_breaks = c(-2,0,2),
+                         show_rownames = FALSE,
+                         show_colnames = TRUE,
+                         border_color = NA,
+                         main = "Atria vs Vent  \n Heatmap based on Log10(RPKM) values ",
+                         scale = "row",
+                         
+  )
+  my_heatmap
+}
+
 funcGlimavolc <- function(varfilename){
   
   #glimmaVolcano(lrt , dge = y,main = paste("Atria", "vs", "Vent"),status.cols = c("dodgerblue", "gray", "firebrick") )
@@ -206,45 +250,6 @@ p2
 #dfTT2
 }
 
-geneList1<- rep(0, times=nrow(RPKM4))
-geneList1
-
-str(geneList1)
-names(geneList1) <- row.names(RPKM4) 
-geneList1
-geneList2 <- replace(geneList1,names(geneList1) %in% tt$table$GeneID, tt$table$logFC)
-geneList2
-#github code
-
-
-
-if (!file.exists("~/Desktop/BIOINFORMATICS_jacobi/go_mapping_tmp")){
-  ensembl <- useEnsembl( biomart = "genes",dataset= "mmusculus_gene_ensembl")
-  go_annotations <- getBM(attributes = c("ensembl_gene_id", "go_id") , values =row.names(RPKM4), mart = ensembl)
-  go_annotations
-  dim(go_annotations)
-  go_annotations <- go_annotations %>%
-    group_by(ensembl_gene_id) %>%
-    mutate(go_id = paste0(go_id, collapse = ", ")) %>%
-    distinct()
-  
-  write.table(go_annotations, file = "~/Desktop/BIOINFORMATICS_jacobi/go_mapping_tmp", row.names = F, na = "", col.names = F, sep = "\t", quote = FALSE)
-}
-
-# read GO gene<>GO mappings from file
-geneID2GO <- readMappings(file = "~/Desktop/BIOINFORMATICS_jacobi/go_mapping_tmp")
-
-topDiffGenesUp <- function(allScore) {
-  return(allScore > 0)
-}
-
-topDiffGenesdown <- function(allScore) {
-  return(allScore < 0)
-}
-
-topDiffGenes <- function(allScore) {
-  return(allScore)
-}
 
 funcGOBasicplot <-function(ont,TopN,P_valcutoff,updown){
 
@@ -438,6 +443,6 @@ funcGOGroupGene <-function(ont,TopN,P_valcutoff,updown){
 }  # end of function
 
 funchaetmap()
-funcGlimavolc(varfilename = "154")
+funcGlimavolc(varfilename = "165")
 funcGOBasicplot("BP",20,0.05,"up")
 funcGOGroupGene("BP",20,0.05,"up")
