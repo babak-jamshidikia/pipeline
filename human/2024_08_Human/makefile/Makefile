@@ -34,27 +34,27 @@ making_flexbar_directory:
 	echo "making directory for flexbar"
 	echo "     "
 	
-	mkdir /prj/2024_05_Heart/flexbar 
+	mkdir /prj/2024_08_human/flexbar 
 
-#Atria
-/prj/2024_05_Heart/flexbar/flb_WT_Atria_1.fastq.gz:
-	$(eval jidAt1fl:= $(jidAt1fl)$(shell sbatch --parsable ~/bioscripts/2024_05_Heart/s_flexbar_s.sh /prj/2024_05_Heart/raw_data/WT_Atria_1.fastq.gz  /prj/2024_05_Heart/flexbar/flb_WT_Atria_1))
+#SiC
+/prj/2024_08_human/flexbar/SiC_1.fastq.gz:
+	$(eval jidAt1fl:= $(jidAt1fl)$(shell sbatch --parsable /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_flexbar_s.sh /prj/2024_05_Heart/raw_data/WT_Atria_1.fastq.gz  /prj/2024_05_Heart/flexbar/flb_WT_Atria_1))
 	echo " jid_Atriom_1fl ->  $(jidAt1fl)"
-/prj/2024_05_Heart/flexbar/flb_WT_Atria_2.fastq.gz:
-	$(eval jidAt2fl:=$(jidAt2fl)$(shell sbatch  --parsable ~/bioscripts/2024_05_Heart/s_flexbar_s.sh /prj/2024_05_Heart/raw_data/WT_Atria_2.fastq.gz  /prj/2024_05_Heart/flexbar/flb_WT_Atria_2))
+/prj/2024_08_human/flexbar/SiC_2.fastq.gz:
+	$(eval jidAt2fl:=$(jidAt2fl)$(shell sbatch  --parsable /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_flexbar_s.sh /prj/2024_05_Heart/raw_data/WT_Atria_2.fastq.gz  /prj/2024_05_Heart/flexbar/flb_WT_Atria_2))
 	echo " jid_Atriom_2fl -> $(jidAt2fl)"
-/prj/2024_05_Heart/flexbar/flb_WT_Atria_3.fastq.gz:
-	$(eval jidAt3fl:=$(jidAt3fl)$(shell sbatch  --parsable ~/bioscripts/2024_05_Heart/s_flexbar_s.sh /prj/2024_05_Heart/raw_data/WT_Atria_3.fastq.gz  /prj/2024_05_Heart/flexbar/flb_WT_Atria_3))
+/prj/2024_08_human/flexbar/SiC_3.fastq.gz:
+	$(eval jidAt3fl:=$(jidAt3fl)$(shell sbatch  --parsable /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_flexbar_s.sh /prj/2024_05_Heart/raw_data/WT_Atria_3.fastq.gz  /prj/2024_05_Heart/flexbar/flb_WT_Atria_3))
 	echo " jid_Atriom_3fl -> $(jidAt3fl)"
-# Vents
-/prj/2024_05_Heart/flexbar/flb_WT_Vent_1.fastq.gz:
-	$(eval jidVe1fl:=$(jidVe1fl)$(shell sbatch --parsable ~/bioscripts/2024_05_Heart/s_flexbar_s.sh /prj/2024_05_Heart/raw_data/WT_Vent_1.fastq.gz /prj/2024_05_Heart/flexbar/flb_WT_Vent_1))
+# SiC_TM
+/prj/2024_08_human/flexbar/SiC_TM_1.fastq.gz:
+	$(eval jidVe1fl:=$(jidVe1fl)$(shell sbatch --parsable /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_flexbar_s.sh /prj/2024_05_Heart/raw_data/WT_Vent_1.fastq.gz /prj/2024_05_Heart/flexbar/flb_WT_Vent_1))
 	echo " jid_Vent_1fl -> $(jidVe1fl)"
-/prj/2024_05_Heart/flexbar/flb_WT_Vent_2.fastq.gz:
-	$(eval jidVe2fl:=$(jidVe2fl)$(shell sbatch  --parsable ~/bioscripts/2024_05_Heart/s_flexbar_s.sh /prj/2024_05_Heart/raw_data/WT_Vent_2.fastq.gz /prj/2024_05_Heart/flexbar/flb_WT_Vent_2))
+/prj/2024_05_human/flexbar/SiC_TM_2.fastq.gz:
+	$(eval jidVe2fl:=$(jidVe2fl)$(shell sbatch  --parsable /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_flexbar_s.sh /prj/2024_05_Heart/raw_data/WT_Vent_2.fastq.gz /prj/2024_05_Heart/flexbar/flb_WT_Vent_2))
 	echo " jid_Vent_2fl -> $(jidVe2fl)"
-/prj/2024_05_Heart/flexbar/flb_WT_Vent_3.fastq.gz:
-	$(eval jidVe3fl:=$(jidVe3fl)$(shell sbatch --parsable ~/bioscripts/2024_05_Heart/s_flexbar_s.sh /prj/2024_05_Heart/raw_data/WT_Vent_3.fastq.gz /prj/2024_05_Heart/flexbar/flb_WT_Vent_3))
+/prj/2024_05_human/flexbar/SiC_TM_3.fastq.gz:
+	$(eval jidVe3fl:=$(jidVe3fl)$(shell sbatch --parsable /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_flexbar_s.sh /prj/2024_05_Heart/raw_data/WT_Vent_3.fastq.gz /prj/2024_05_Heart/flexbar/flb_WT_Vent_3))
 	echo " jid_Vent_3fl -> $(jidVe3fl)"
 
 
