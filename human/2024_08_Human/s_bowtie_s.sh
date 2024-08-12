@@ -13,7 +13,7 @@
 #SBATCH -J "bowtie2 rRNA filtering single"
 
 # check if we have 5 arguments
-if [ ! $# == 3 ]; then
+if [ ! $# == 4 ]; then
   echo "Usage: $0 [rRNA index argument] [Read 1 file] [target dir e.g. /awesome/project/]"
   exit
 fi
@@ -42,5 +42,8 @@ echo "target = " $3
 # write gz unmapping reads [== no rRNA] to target dir
 
 #bowtie2 -x $1 -U $2  -S /dev/null --no-unal --omit-sec-seq --threads 20 --mm --seed 1337 --time --un-gz $3/bwt.fastq.gz 2> $3/bwt.log
-bowtie2 -x $1 -U $2  -S /dev/null --no-unal --omit-sec-seq --threads 20 --mm --seed 1337 --time --un-gz $3 2> ${3}.log
+#bowtie2 -x $1 -U $2  -S /dev/null --no-unal --omit-sec-seq --threads 20 --mm --seed 1337 --time --un-gz $3 2> ${3}.log
+bowtie2 -x $1 -1 $2 -2 $3 -S /dev/null --no-unal --omit-sec-seq --threads 20 --mm --seed 1337 --time --un-conc-gz $4 2> $4/$target.log
+
+
 echo "end"

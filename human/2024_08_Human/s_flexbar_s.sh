@@ -12,7 +12,7 @@
 
 
 # check if we have 3 arguments
-if [ ! $# == 2 ]; then
+if [ ! $# == 3 ]; then
   echo "Usage: $0 [Read 1 file] [target dir e.g. /tmp/]"
   exit
 fi
@@ -31,6 +31,6 @@ echo  "$2 target = " $2
 # quality min phred 28
 # use sanger quality values (i.e. Illumina 1.9+ encoding)
 
-flexbar -r $1 -t $2 -n 15 -z GZ -m 30 -u 0  -q TAIL -qt 28 -as "AGATCGGAAGAG" -qf sanger -j
+flexbar -r $1 -p $2-t $3 -n 15 -z GZ -m 30 -u 0  -q TAIL -qt 28 -as "AGATCGGAAGAG" -qf sanger -j
 
 echo "end"

@@ -34,6 +34,6 @@ echo " GTFfile ---------->  " $4
 
 # create the target directory, STAR will not do that for us
 #mkdir $3/$target
-STAR --genomeDir $1 --runThreadN 5 --readFilesIn $2  --sjdbGTFfile $4 --readFilesCommand\
- zcat --outFileNamePrefix $3 --outSAMtype BAM SortedByCoordinate --outSAMstrandField intronMotif --genomeLoad NoSharedMemory 
+STAR --genomeDir $1 --runThreadN 5 --readFilesIn $2 $3  --sjdbGTFfile $5 --readFilesCommand\
+ zcat --outFileNamePrefix $4 --outSAMtype BAM SortedByCoordinate --outSAMstrandField intronMotif --genomeLoad NoSharedMemory 
 echo "----- END --------------- "
