@@ -13,7 +13,7 @@
 #SBATCH -J "bowtie2 rRNA filtering single"
 
 # check if we have 5 arguments
-if [ ! $# == 4 ]; then
+if [ ! $# == 5 ]; then
   echo "Usage: $0 [rRNA index argument] [Read 1 file] [target dir e.g. /awesome/project/]"
   exit
 fi
@@ -26,12 +26,14 @@ echo "start"
 
 echo "index  = " $1
 echo "read1  = " $2
-echo "target = " $3
+echo "read2  = " $3
+echo "target directory = " $4
+echo "target file = " $5
 
 
 # remove the file extension and potential "R1" markings
 # (works for double extension, e.g. .fastq.gz)
-#target=`expr ${2//} : \(.*\)\..*\.'`
+#target = $5 #`expr ${2//} : \(.*\)\..*\.'`
 #echo $target
 #exit
 
@@ -43,7 +45,8 @@ echo "target = " $3
 
 #bowtie2 -x $1 -U $2  -S /dev/null --no-unal --omit-sec-seq --threads 20 --mm --seed 1337 --time --un-gz $3/bwt.fastq.gz 2> $3/bwt.log
 #bowtie2 -x $1 -U $2  -S /dev/null --no-unal --omit-sec-seq --threads 20 --mm --seed 1337 --time --un-gz $3 2> ${3}.log
-bowtie2 -x $1 -1 $2 -2 $3 -S /dev/null --no-unal --omit-sec-seq --threads 20 --mm --seed 1337 --time --un-conc-gz $4 2> $4/$target.log
+#bowtie2 -x $1 -1 $2 -2 $3 -S /dev/null --no-unal --omit-sec-seq --threads 20 --mm --seed 1337 --time --un-conc-gz $4/$target.fastq.gz  2> $4/bwt.log
+bowtie2 -x $1 -1 $2 -2 $3 -S /dev/null --no-unal --omit-sec-seq --threads 20 --mm --seed 1337 --time --un-conc-gz ${4}/$5_%.fastq.gz 2> $4/$5.log
 
 
 echo "end"

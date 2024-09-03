@@ -1,7 +1,6 @@
 
-
-all: flexbar bowtie  STAR
-#all: bowtie
+all:   flexbar  bowtie  STAR
+#all: STAR
 
 #Rules for fastqc
 #fastqc: makingFastqcdirectory /mnt/c/row_data/fastqc/sub35_1_fastqc.html /mnt/c/row_data/fastqc/sub35_2_fastqc.html
@@ -24,85 +23,141 @@ all: flexbar bowtie  STAR
 #----
 
 
-
-flexbar: making_flexbar_directory /prj/2024_05_Heart/flexbar/flb_WT_Atria_1.fastq.gz /prj/2024_05_Heart/flexbar/flb_WT_Atria_2.fastq.gz /prj/2024_05_Heart/flexbar/flb_WT_Atria_3.fastq.gz \
- /prj/2024_05_Heart/flexbar/flb_WT_Atria_1.fastq.gz /prj/2024_05_Heart/flexbar/flb_WT_Atria_2.fastq.gz /prj/2024_05_Heart/flexbar/flb_WT_Atria_3.fastq.gz \
-	 /prj/2024_05_Heart/flexbar/flb_WT_Vent_1.fastq.gz /prj/2024_05_Heart/flexbar/flb_WT_Vent_2.fastq.gz /prj/2024_05_Heart/flexbar/flb_WT_Vent_3.fastq.gz
+flexbar: making_flexbar_directory  /prj/2024_08_human/flexbar/SiC_1.fastq.gz 
+ /prj/2024_08_human/flexbar/SiC_2.fastq.gz /prj/2024_08_human/flexbar/SiC_3.fastq.gz   /prj/2024_08_human/flexbar/SiC_4.fastq.gz  \
+        /prj/2024_08_human/flexbar/SiC_TM_1.fastq.gz /prj/2024_08_human/flexbar/SiC_TM_2.fastq.gz \
+ /prj/2024_08_human/flexbar/SiC_TM_3.fastq.gz  /prj/2024_08_human/flexbar/SiC_TM_4.fastq.gz
 
 making_flexbar_directory: 
 	
 	echo "making directory for flexbar"
 	echo "     "
 	
-	mkdir /prj/2024_08_human/flexbar 
+	mkdir /prj/2024_08_Human/flexbar 
 
 #SiC
 /prj/2024_08_human/flexbar/SiC_1.fastq.gz:
-	$(eval jidAt1fl:= $(jidAt1fl)$(shell sbatch --parsable /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_flexbar_s.sh /prj/2024_05_Heart/raw_data/WT_Atria_1.fastq.gz  /prj/2024_05_Heart/flexbar/flb_WT_Atria_1))
-	echo " jid_Atriom_1fl ->  $(jidAt1fl)"
+	$(eval jidSiC1fl:= $(jidSiC1fl)$(shell sbatch --parsable /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_flexbar_pair.sh /prj/2024_08_Human/raw_data/SiC_1_1.fq.gz \
+                                                     /prj/2024_08_Human/raw_data/SiC_1_2.fq.gz  /prj/2024_08_Human/flexbar/SiC_1))
+	echo " jid_SiC_1fl ->  $(jidSiC1fl)"
 /prj/2024_08_human/flexbar/SiC_2.fastq.gz:
-	$(eval jidAt2fl:=$(jidAt2fl)$(shell sbatch  --parsable /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_flexbar_s.sh /prj/2024_05_Heart/raw_data/WT_Atria_2.fastq.gz  /prj/2024_05_Heart/flexbar/flb_WT_Atria_2))
-	echo " jid_Atriom_2fl -> $(jidAt2fl)"
+	$(eval jidSiC2fl:=$(jidSiC2fl)$(shell sbatch  --parsable  /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_flexbar_pair.sh /prj/2024_08_Human/raw_data/SiC_2_1.fq.gz \
+                                                     /prj/2024_08_Human/raw_data/SiC_2_2.fq.gz  /prj/2024_08_Human/flexbar/SiC_2))
+	echo " jid_SiC_2fl -> $(jidSiC2fl)"
 /prj/2024_08_human/flexbar/SiC_3.fastq.gz:
-	$(eval jidAt3fl:=$(jidAt3fl)$(shell sbatch  --parsable /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_flexbar_s.sh /prj/2024_05_Heart/raw_data/WT_Atria_3.fastq.gz  /prj/2024_05_Heart/flexbar/flb_WT_Atria_3))
-	echo " jid_Atriom_3fl -> $(jidAt3fl)"
+	$(eval jidSiC3fl:=$(jidSiC3fl)$(shell sbatch  --parsable /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_flexbar_pair.sh /prj/2024_08_Human/raw_data/SiC_3_1.fq.gz \
+                                                    /prj/2024_08_Human/raw_data/SiC_3_2.fq.gz  /prj/2024_08_Human/flexbar/SiC_3))
+	echo " jid_SiC_3fl -> $(jidSiC3fl)"
+
+/prj/2024_08_human/flexbar/SiC_4.fastq.gz:
+	$(eval jidSiC4fl:=$(jidSiC4fl)$(shell sbatch  --parsable /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_flexbar_pair.sh /prj/2024_08_Human/raw_data/SiC_4_1.fq.gz \
+                                                    /prj/2024_08_Human/raw_data/SiC_4_2.fq.gz  /prj/2024_08_Human/flexbar/SiC_4))
+	echo " jid_SiC_4fl -> $(jidSiC4fl)"
+
 # SiC_TM
+
 /prj/2024_08_human/flexbar/SiC_TM_1.fastq.gz:
-	$(eval jidVe1fl:=$(jidVe1fl)$(shell sbatch --parsable /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_flexbar_s.sh /prj/2024_05_Heart/raw_data/WT_Vent_1.fastq.gz /prj/2024_05_Heart/flexbar/flb_WT_Vent_1))
-	echo " jid_Vent_1fl -> $(jidVe1fl)"
-/prj/2024_05_human/flexbar/SiC_TM_2.fastq.gz:
-	$(eval jidVe2fl:=$(jidVe2fl)$(shell sbatch  --parsable /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_flexbar_s.sh /prj/2024_05_Heart/raw_data/WT_Vent_2.fastq.gz /prj/2024_05_Heart/flexbar/flb_WT_Vent_2))
-	echo " jid_Vent_2fl -> $(jidVe2fl)"
-/prj/2024_05_human/flexbar/SiC_TM_3.fastq.gz:
-	$(eval jidVe3fl:=$(jidVe3fl)$(shell sbatch --parsable /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_flexbar_s.sh /prj/2024_05_Heart/raw_data/WT_Vent_3.fastq.gz /prj/2024_05_Heart/flexbar/flb_WT_Vent_3))
-	echo " jid_Vent_3fl -> $(jidVe3fl)"
+	$(eval jidSiCTM1fl:=$(jidSiCTM1fl)$(shell sbatch --parsable /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_flexbar_pair.sh /prj/2024_08_Human/raw_data/SiC_TM_1_1.fq.gz \
+                                                    /prj/2024_08_Human/raw_data/Sic/SiC_TM_1_2.fq.gz  /prj/2024_08_Human/flexbar/SiC/SiC_TM_1))
+	echo " jid_SIC_TM_1fl -> $(jidSiCTM1fl)"
+/prj/2024_08_human/flexbar/SiC_TM_2.fastq.gz:
+	$(eval jidSiCTM2fl:=$(jidSiCTM2fl)$(shell sbatch  --parsable  /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_flexbar_pair.sh /prj/2024_08_Human/raw_data/SiC_TM_2_1.fq.gz \
+                                                    /prj/2024_08_Human/raw_data/Sic/SiC_TM_2_2.fq.gz  /prj/2024_08_human/flexbar/SiC/SiC_TM_2))
+	echo " jid_SiC_TM_2fl -> $(jidSiCTM2fl)"
+/prj/2024_08_human/flexbar/SiC_TM_3.fastq.gz:
+	$(eval jidSiCTM3fl:=$(jidSiCTM3fl)$(shell sbatch --parsable  /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_flexbar_pair.sh /prj/2024_08_Human/raw_data/SiC_TM_3_1.fq.gz \
+                                                     /prj/2024_08_Human/raw_data/Sic/SiC_TM_3_2.fq.gz  /prj/2024_08_human/flexbar/SiC/SiC_TM_3))
+	echo " jid_SiC_TM_3fl -> $(jidSiCTM3fl)"
+
+/prj/2024_08_human/flexbar/SiC_TM_4.fastq.gz:
+
+	$(eval jidSiCTM4fl:=$(jidSiCTM4fl)$(shell sbatch --parsable  /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_flexbar_pair.sh /prj/2024_08_Human/raw_data/SiC_TM_4_1.fq.gz \                                   
+                  /prj/2024_08_Human/raw_data/Sic/SiC_TM_4_2.fq.gz  /prj/2024_08_human/flexbar/SiC/SiC_TM_4))
+	echo " jid_SiC_TM_4fl -> $(jidSiCTM4fl)"
+
 
 
 #Rules for bowtie
 #-------------
-#sbatch s_bowtie_s.sh /biodb/genomes/mus_musculus/rRNA/mmusculus.rRNA ~/bprj/2024_05_heart/Atria/Atria_1/flexbar/flb_WT_Atria_1.fastq.gz ~/bprj/2024_05_heart/Atria/Atria_1/bwt/bwt_WT_Atria_1
 
-#-------------
-
-
-
-
-
-bowtie: makingbowtiefolder /prj/2024_05_Heart/bowtie/bwt_WT_Atria_1.fastq.gz  /prj/2024_05_Heart/bowtie/bwt_WT_Atria_2.fastq.gz /prj/2024_05_Heart/bowtie/bwt_WT_Atria_3.fastq.gz \
- 	/prj/2024_05_Heart/bowtie/bwt_WT_Vent_1.fastq.gz /prj/2024_05_Heart/bowtie/bwt_WT_Vent_2.fastq.gz /prj/2024_05_Heart/bowtie/bwt_WT_Vent_3.fastq.gz
+bowtie: makingbowtiefolder /prj/2024_08_Human/bowtie/bwt_SiC_1_1.fastq.gz /prj/2024_08_Human/bowtie/bwt_SiC_2_1.fastq.gz /prj/2024_08_Human/bowtie/bwt_SiC_3_1.fastq.gz /prj/2024_08_Human/bowtie/bwt_SiC_4_1.fastq.gz \
+ /prj/2024_08_Human/bowtie/bwt_SiC_TM_1_1.fastq.gz  /prj/2024_08_Human/bowtie/bwt_SiC_TM_2_1.fastq.gz /prj/2024_08_Human/bowtie/bwt_SiC_TM_3_1.fastq.gz /prj/2024_08_Human/bowtie/bwt_SiC_TM_3_1.fastq.gz
 
 makingbowtiefolder:
-	mkdir /prj/2024_05_Heart/bowtie
+	mkdir /prj/2024_08_Human/bowtie
 
-#Atria
-/prj/2024_05_Heart/bowtie/bwt_WT_Atria_1.fastq.gz:
-	$(eval jidAt1bw:=$(jidAt1bw)$(shell sbatch  --parsable --dependency=afterok:$(jidAt1fl) ~/bioscripts/2024_05_Heart/s_bowtie_s.sh /biodb/genomes/mus_musculus/rRNA/mmusculus.rRNA \
- 	/prj/2024_05_Heart/flexbar/flb_WT_Atria_1.fastq.gz /prj/2024_05_Heart/bowtie/bwt_WT_Atria_1.fastq.gz))
-	echo " jid_Atria_1bw -> $(jidAt1bw)"
+#SiC
+/prj/2024_08_Human/bowtie/bwt_SiC_1_1.fastq.gz:  #/prj/2024_08_Human/bowtie/bwt_SiC_1_2.fastq.gz: 
 
-/prj/2024_05_Heart/bowtie/bwt_WT_Atria_2.fastq.gz:
-	$(eval jidAt2bw:=$(jidAt2bw)$(shell sbatch  --parsable --dependency=afterok:$(jidAt2fl) ~/bioscripts/2024_05_Heart/s_bowtie_s.sh /biodb/genomes/mus_musculus/rRNA/mmusculus.rRNA \
-	/prj/2024_05_Heart/flexbar/flb_WT_Atria_2.fastq.gz /prj/2024_05_Heart/bowtie/bwt_WT_Atria_2.fastq.gz))
-	echo " jid_Atria_2bw -> $(jidAt2bw)"
-/prj/2024_05_Heart/bowtie/bwt_WT_Atria_3.fastq.gz:
-	$(eval jidAt3bw :=$(jidAt3bw)$(shell sbatch  --parsable --dependency=afterok:$(jidAt3fl) ~/bioscripts/2024_05_Heart/s_bowtie_s.sh /biodb/genomes/mus_musculus/rRNA/mmusculus.rRNA \
-	 /prj/2024_05_Heart/flexbar/flb_WT_Atria_3.fastq.gz /prj/2024_05_Heart/bowtie/bwt_WT_Atria_3.fastq.gz))
-	echo " jid_Atria_3bw -> $(jidAt3bw)"
-# Vents -----------------------------------
+	$(eval jidSiC1bw:=$(jidSiC1bw)$(shell sbatch  --parsable --dependency=afterok:$(jidSiC1fl)   /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_bowtie_pair.sh \
+         /biodb/genomes/homo_sapiens/rRNA_cluster/rRNA_precursor \
+ 	/prj/2024_08_Human/flexbar/SiC_1_1.fastq.gz  /prj/2024_08_Human/flexbar/SiC_1_2.fastq.gz  /prj/2024_08_Human/bowtie/  bwt_SiC_1))
+	echo " jid_Atria_1bw -> $(jidSiC1bw)"
 
-/prj/2024_05_Heart/bowtie/bwt_WT_Vent_1.fastq.gz:
-	$(eval jidVe1bw:=$(jidVe1bw)$(shell sbatch  --parsable --dependency=afterok:$(jidVe1fl) ~/bioscripts/2024_05_Heart/s_bowtie_s.sh /biodb/genomes/mus_musculus/rRNA/mmusculus.rRNA \
-	 /prj/2024_05_Heart/flexbar/flb_WT_Vent_1.fastq.gz /prj/2024_05_Heart/bowtie/bwt_WT_Vent_1.fastq.gz))
-	echo " jid_Vent_1bw -> $(jidVe1bw)"
-/prj/2024_05_Heart/bowtie/bwt_WT_Vent_2.fastq.gz:
-	$(eval jidVe2bw:=$(jidVe2bw)$(shell sbatch  --parsable --dependency=afterok:$(jidVe2fl)  ~/bioscripts/2024_05_Heart/s_bowtie_s.sh /biodb/genomes/mus_musculus/rRNA/mmusculus.rRNA \
-	 /prj/2024_05_Heart/flexbar/flb_WT_Vent_2.fastq.gz /prj/2024_05_Heart/bowtie/bwt_WT_Vent_2.fastq.gz))
-	echo " jid_Vent_2bw -> $(jidVe2bw)"
-/prj/2024_05_Heart/bowtie/bwt_WT_Vent_3.fastq.gz:
-	$(eval jidVe3bw:=$(jidVe3bw)$(shell sbatch  --parsable --dependency=afterok:$(jidVe3fl)  ~/bioscripts/2024_05_Heart/s_bowtie_s.sh /biodb/genomes/mus_musculus/rRNA/mmusculus.rRNA \
-	 /prj/2024_05_Heart/flexbar/flb_WT_Vent_3.fastq.gz /prj/2024_05_Heart/bowtie/bwt_WT_Vent_3.fastq.gz))
-	echo " jid_Vent_3bw -> $(jidVe3bw)"
+/prj/2024_08_Human/bowtie/bwt_SiC_2_1.fastq.gz: #/prj/2024_08_Human/bowtie/bwt_SiC_2_2.fastq.gz
 
+	$(eval jidSiC2bw:=$(jidSiC2bw)$(shell sbatch  --parsable --dependency=afterok:$(jidSiC2fl)   /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_bowtie_pair.sh \
+         /biodb/genomes/homo_sapiens/rRNA_cluster/rRNA_precursor \
+ 	/prj/2024_08_Human/flexbar/SiC_2_1.fastq.gz  /prj/2024_08_Human/flexbar/SiC_2_2.fastq.gz  /prj/2024_08_Human/bowtie/  bwt_SiC_2))
+	echo " jid_Atria_1bw -> $(jidSiC2bw)"
+
+/prj/2024_08_Human/bowtie/bwt_SiC_3_1.fastq.gz: # /prj/2024_08_Human/bowtie/bwt_SiC_3_2.fastq.gz
+
+	$(eval jidSiC3bw:=$(jidSiC3bw)$(shell sbatch  --parsable --dependency=afterok:$(jidSiC3fl)   /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_bowtie_pair.sh \
+         /biodb/genomes/homo_sapiens/rRNA_cluster/rRNA_precursor \
+ 	/prj/2024_08_Human/flexbar/SiC_3_1.fastq.gz  /prj/2024_08_Human/flexbar/SiC_3_2.fastq.gz  /prj/2024_08_Human/bowtie/  bwt_SiC_3))
+	echo " jid_Atria_1bw -> $(jidSiC3bw)"
+/prj/2024_08_Human/bowtie/bwt_SiC_4_1.fastq.gz: #/prj/2024_08_Human/bowtie/bwt_SiC_4_2.fastq.gz
+
+	$(eval jidSiC4bw:=$(jidSiC4bw)$(shell sbatch  --parsable --dependency=afterok:$(jidSiC4fl)   /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_bowtie_pair.sh \
+         /biodb/genomes/homo_sapiens/rRNA_cluster/rRNA_precursor \
+ 	/prj/2024_08_Human/flexbar/SiC_4_1.fastq.gz  /prj/2024_08_Human/flexbar/SiC_4_2.fastq.gz  /prj/2024_08_Human/bowtie/  bwt_SiC_4))
+	echo " jid_Atria_1bw -> $(jidSiC4bw)"
+
+
+
+# just for test ------------
+
+
+#	$(eval jidAt1bw:=$(jidAt1bw)$(shell sbatch  --parsable    /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_bowtie_pair.sh \
+#         /biodb/genomes/homo_sapiens/rRNA_cluster/rRNA_precursor \
+# 	/prj/2024_08_Human/flexbar/SiC_1_1.fastq.gz  /prj/2024_08_Human/flexbar/SiC_1_2.fastq.gz  /prj/2024_08_Human/bowtie/  bwt_SiC_1))
+
+#	echo " jid_Atria_1bw -> $(jidAt1bw)"
+
+
+# ------------------
+
+
+# SiC_TM -----------------------------------
+
+/prj/2024_08_Human/bowtie/bwt_SiC_TM_1_1.fastq.gz: #/prj/2024_08_Human/bowtie/bwt_SiC_TM_1_2.fastq.gz: 
+
+	$(eval jidSiCTM1bw:=$(jidSiCTM1bw)$(shell sbatch  --parsable --dependency=afterok:$(jidSiCTM1fl)   /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_bowtie_pair.sh \
+         /biodb/genomes/homo_sapiens/rRNA_cluster/rRNA_precursor \
+ 	/prj/2024_08_Human/flexbar/SiC_TM_1_1.fastq.gz  /prj/2024_08_Human/flexbar/SiC_TM_1_2.fastq.gz  /prj/2024_08_Human/bowtie/  bwt_SiC_TM_1))
+	echo " jid_SiC_TM_1bw -> $(jiSiCTM1bw)"
+
+/prj/2024_08_Human/bowtie/bwt_SiC_TM_2_1.fastq.gz: #/prj/2024_08_Human/bowtie/bwt_SiC_TM_2_2.fastq.gz: 
+
+	$(eval jidSiCTM2bw:=$(jidSiCTM2bw)$(shell sbatch  --parsable --dependency=afterok:$(jidSiCTM2fl)   /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_bowtie_pair.sh \
+         /biodb/genomes/homo_sapiens/rRNA_cluster/rRNA_precursor \
+ 	/prj/2024_08_Human/flexbar/SiC_TM_2_1.fastq.gz  /prj/2024_08_Human/flexbar/SiC_TM_2_2.fastq.gz  /prj/2024_08_Human/bowtie/  bwt_SiC_TM_2))
+	echo " jid_SiC_TM_1bw -> $(jiSiCTM2bw)"
+
+/prj/2024_08_Human/bowtie/bwt_SiC_TM_3_1.fastq.gz: #/prj/2024_08_Human/bowtie/bwt_SiC_TM_3_2.fastq.gz: 
+
+	$(eval jidSiCTM3bw:=$(jidSiCTM3bw)$(shell sbatch  --parsable --dependency=afterok:$(jidSiCTM3fl)   /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_bowtie_pair.sh \
+         /biodb/genomes/homo_sapiens/rRNA_cluster/rRNA_precursor \
+ 	/prj/2024_08_Human/flexbar/SiC_TM_3_1.fastq.gz  /prj/2024_08_Human/flexbar/SiC_TM_3_2.fastq.gz  /prj/2024_08_Human/bowtie/  bwt_SiC_TM_3))
+	echo " jid_SiC_TM_1bw -> $(jiSiCTM3bw)"
+
+/prj/2024_08_Human/bowtie/bwt_SiC_TM_4_1.fastq.gz: #/prj/2024_08_Human/bowtie/bwt_SiC_TM_3_2.fastq.gz: 
+
+	$(eval jidSiCTM4bw:=$(jidSiCTM4bw)$(shell sbatch  --parsable --dependency=afterok:$(jidSiCTM4fl)   /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_bowtie_pair.sh \
+         /biodb/genomes/homo_sapiens/rRNA_cluster/rRNA_precursor \
+ 	/prj/2024_08_Human/flexbar/SiC_TM_4_1.fastq.gz  /prj/2024_08_Human/flexbar/SiC_TM_4_2.fastq.gz  /prj/2024_08_Human/bowtie/  bwt_SiC_TM_4))
+	echo " jid_SiC_TM_1bw -> $(jiSiCTM4bw)"
 
 
 #Rules for STAR
@@ -113,42 +168,71 @@ makingbowtiefolder:
 
 
 
-STAR: makingSTARfolder /prj/2024_05_Heart/star/str_WT_Atria_1.sortedBycoord.out.bam /prj/2024_05_Heart/star/str_WT_Atria_2.sortedBycoord.out.bam /prj/2024_05_Heart/star/str_WT_Atria_3.sortedBycoord.out.bam \
-	/prj/2024_05_Heart/star/str_WT_Vent_1.sortedBycoord.out.bam /prj/2024_05_Heart/star/str_WT_Vent_2.sortedBycoord.out.bam /prj/2024_05_Heart/star/str_WT_Vent_3.sortedBycoord.out.bam
+STAR: makingSTARfolder  /prj/2024_08_Human/star/str_SiC_1Aligned.sortedByCoord.out.bam /prj/2024_08_Human/star/str_SiC_2Aligned.sortedByCoord.out.bam \
+/prj/2024_08_Human/star/str_SiC_3Aligned.sortedByCoord.out.bam /prj/2024_08_Human/star/str_SiC_4Aligned.sortedByCoord.out.bam \
+/prj/2024_08_Human/star/str_SiC_TM_1Aligned.sortedByCoord.out.bam /prj/2024_08_Human/star/str_SiC_TM_2Aligned.sortedByCoord.out.bam \
+/prj/2024_08_Human/star/str_SiC_TM_3Aligned.sortedByCoord.out.bam /prj/2024_08_Human/star/str_SiC_TM_4Aligned.sortedByCoord.out.bam
+
 makingSTARfolder:
-	mkdir  /prj/2024_05_Heart/STAR
+	mkdir  /prj/2024_08_Human/star
 
-/prj/2024_05_Heart/star/str_WT_Atria_1.sortedBycoord.out.bam:
-	$(eval jidAt1st:=$(jidAt1st)$(shell sbatch --parsable --dependency=afterok:$(jidAt1bw)  ~/bioscripts/2024_05_Heart/s_star_s.sh /biodb/genomes/mus_musculus/GRCm39_107/star \
-	 /prj/2024_05_Heart/bowtie/bwt_WT_Atria_1.fastq.gz  /prj/2024_05_Heart/star/str_WT_Atria_1 /biodb/genomes/mus_musculus/GRCm39_107/GRCm39.107.gtf))
-	echo " jid_Atria_1st -> $(jidAt1st)"
+#---------------- just for test
 
-/prj/2024_05_Heart/star/str_WT_Atria_2.sortedBycoord.out.bam:
-	$(eval jidAt2st:=$(jidAt2st)$(shell sbatch --parsable --dependency=afterok:$(jidAt2bw) ~/bioscripts/2024_05_Heart/s_star_s.sh /biodb/genomes/mus_musculus/GRCm39_107/star \
-	 /prj/2024_05_Heart/bowtie/bwt_WT_Atria_2.fastq.gz  /prj/2024_05_Heart/star/str_WT_Atria_2 /biodb/genomes/mus_musculus/GRCm39_107/GRCm39.107.gtf))
-	echo " jid_Atria_2st -> $(jidAt2st)"
+#/prj/2024_08_Human/star/str_SiC_1.sortedBycoord.out.bam:
+#	$(eval jidSiC1_st:=$(jidSiC1st)$(shell sbatch --parsable   /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_star_pair.sh  /biodb/genomes/homo_sapiens/GRCh38_107/star \
+#	/prj/2024_08_Human/bowtie/bwt_SiC_1_1.fastq.gz  /prj/2024_08_Human/bowtie/bwt_SiC_1_2.fastq.gz  /prj/2024_08_Human/star/str_SiC_1  /biodb/genomes/homo_sapiens/GRCh38_107/GRCh38.107.chr_patch_hapl_scaff.gtf))
+#	echo " jid_Atria_1st -> $(jidSiC1st)"
 
-/prj/2024_05_Heart/star/str_WT_Atria_3.sortedBycoord.out.bam:
-	$(eval jidAt3st:=$(jidAt3s)$(shell sbatch  --parsable --dependency=afterok:$(jidAt3bw) ~/bioscripts/2024_05_Heart/s_star_s.sh /biodb/genomes/mus_musculus/GRCm39_107/star \
-	 /prj/2024_05_Heart/bowtie/bwt_WT_Atria_3.fastq.gz  /prj/2024_05_Heart/star/str_WT_Atria_3 /biodb/genomes/mus_musculus/GRCm39_107/GRCm39.107.gtf))
-	echo " jid_Atria_3st -> $(jidAt3st)"
+#-----------------
 
-/prj/2024_05_Heart/star/str_WT_Vent_1.sortedBycoord.out.bam:
-	$(eval jidVe1st:=$(jidVe1st)$(shell sbatch  --parsable --dependency=afterok:$(jidVe1bw) ~/bioscripts/2024_05_Heart/s_star_s.sh /biodb/genomes/mus_musculus/GRCm39_107/star \
-	 /prj/2024_05_Heart/bowtie/bwt_WT_Vent_1.fastq.gz  /prj/2024_05_Heart/star/str_WT_Vent_1 /biodb/genomes/mus_musculus/GRCm39_107/GRCm39.107.gtf))
-	echo " jid_Vent_1st -> $(jidVe1st)"
+/prj/2024_08_Human/star/str_SiC_1Aligned.sortedByCoord.out.bam:
+	$(eval jidSiC1st:=$(jidSiC1st)$(shell sbatch --parsable --dependency=afterok:$(jidSiC1bw)  /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_star_pair.sh  /biodb/genomes/homo_sapiens/GRCh38_107/star \
+	/prj/2024_08_Human/bowtie/bwt_SiC_1_1.fastq.gz  /prj/2024_08_Human/bowtie/bwt_SiC_1_2.fastq.gz  /prj/2024_08_Human/star/str_SiC_1  /biodb/genomes/homo_sapiens/GRCh38_107/GRCh38.107.chr_patch_hapl_scaff.gtf))
+	echo " jid_Atria_1st -> $(jidSiC1st)"
 
-/prj/2024_05_Heart/star/str_WT_Vent_2.sortedBycoord.out.bam:
-	$(evak  jidVe2st:=$(jidVe2st)$(shell sbatch  --parsable --dependency=afterok:$(jidVe2bw) ~/bioscripts/2024_05_Heart/s_star_s.sh /biodb/genomes/mus_musculus/GRCm39_107/star \
-	 /prj/2024_05_Heart/bowtie/bwt_WT_Vent_2.fastq.gz  /prj/2024_05_Heart/star/str_WT_Vent_2 /biodb/genomes/mus_musculus/GRCm39_107/GRCm39.107.gtf))
-	echo " jid_Vent_2st -> $(jidVe2st)"
 
-/prj/2024_05_Heart/star/str_WT_Vent_3.sortedBycoord.out.bam:
-	$(evak  jidVe3st:=$(jidVe3st)$(shell sbatch  --parsable --dependency=afterok:$(jidVe3bw) ~/bioscripts/2024_05_Heart/s_star_s.sh /biodb/genomes/mus_musculus/GRCm39_107/star \
-	 /prj/2024_05_Heart/bowtie/bwt_WT_Vent_3.fastq.gz  /prj/2024_05_Heart/star/str_WT_Vent_3 /biodb/genomes/mus_musculus/GRCm39_107/GRCm39.107.gtf))
-	echo " jid_Vent_3st -> $(jidVe3st)"
+/prj/2024_08_Human/star/str_SiC_2Aligned.sortedByCoord.out.bam:
+	$(eval jidSiC2st:=$(jidSiC2st)$(shell sbatch --parsable --dependency=afterok:$(jidSiC2bw)  /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_star_pair.sh  /biodb/genomes/homo_sapiens/GRCh38_107/star \
+	/prj/2024_08_Human/bowtie/bwt_SiC_2_1.fastq.gz  /prj/2024_08_Human/bowtie/bwt_SiC_2_2.fastq.gz  /prj/2024_08_Human/star/str_SiC_2  /biodb/genomes/homo_sapiens/GRCh38_107/GRCh38.107.chr_patch_hapl_scaff.gtf))
+	echo " jid_Atria_1st -> $(jidSiC2st)"
 
-#TRACING  
+/prj/2024_08_Human/star/str_SiC_3Aligned.sortedByCoord.out.bam:
+	$(eval jidSiC3st:=$(jidSiC3st)$(shell sbatch --parsable --dependency=afterok:$(jidSiC3bw)  /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_star_pair.sh  /biodb/genomes/homo_sapiens/GRCh38_107/star \
+	/prj/2024_08_Human/bowtie/bwt_SiC_3_1.fastq.gz  /prj/2024_08_Human/bowtie/bwt_SiC_3_2.fastq.gz  /prj/2024_08_Human/star/str_SiC_3  /biodb/genomes/homo_sapiens/GRCh38_107/GRCh38.107.chr_patch_hapl_scaff.gtf))
+	echo " jid_Atria_1st -> $(jidSiC3st)"
+
+/prj/2024_08_Human/star/str_SiC_4Aligned.sortedByCoord.out.bam:
+	$(eval jidSiC4st:=$(jidSiC4st)$(shell sbatch --parsable --dependency=afterok:$(jidSiC4bw)  /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_star_pair.sh  /biodb/genomes/homo_sapiens/GRCh38_107/star \
+	/prj/2024_08_Human/bowtie/bwt_SiC_4_1.fastq.gz  /prj/2024_08_Human/bowtie/bwt_SiC_4_2.fastq.gz  /prj/2024_08_Human/star/str_SiC_3  /biodb/genomes/homo_sapiens/GRCh38_107/GRCh38.107.chr_patch_hapl_scaff.gtf))
+	echo " jid_Atria_1st -> $(jidSiC4st)"
+
+
+#SiC_TM
+
+/prj/2024_08_Human/star/str_SiC_TM_1Aligned.sortedByCoord.out.bam:
+	$(eval jidSiCTM1st:=$(jidSiCTM1st)$(shell sbatch --parsable --dependency=afterok:$(jidSiCTM1bw)  /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_star_pair.sh  /biodb/genomes/homo_sapiens/GRCh38_107/star \
+	/prj/2024_08_Human/bowtie/bwt_SiC_TM_1_1.fastq.gz  /prj/2024_08_Human/bowtie/bwt_SiC_TM_1_2.fastq.gz  /prj/2024_08_Human/star/str_SiC_TM_1  /biodb/genomes/homo_sapiens/GRCh38_107/GRCh38.107.chr_patch_hapl_scaff.gtf))
+	echo " jid_Atria_1st -> $(jidSiCTM1st)"
+
+/prj/2024_08_Human/star/str_SiC_TM_2Aligned.sortedByCoord.out.bam:
+	$(eval jidSiCTM2st:=$(jidSiCTM2st)$(shell sbatch --parsable --dependency=afterok:$(jidSiCTM2bw)  /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_star_pair.sh  /biodb/genomes/homo_sapiens/GRCh38_107/star \
+	/prj/2024_08_Human/bowtie/bwt_SiC_TM_2_1.fastq.gz  /prj/2024_08_Human/bowtie/bwt_SiC_TM_2_2.fastq.gz  /prj/2024_08_Human/star/str_SiC_TM_2  /biodb/genomes/homo_sapiens/GRCh38_107/GRCh38.107.chr_patch_hapl_scaff.gtf))
+	echo " jid_Atria_1st -> $(jidSiCTM2st)"
+
+/prj/2024_08_Human/star/str_SiC_TM_3Aligned.sortedByCoord.out.bam:
+	$(eval jidSiCTM3st:=$(jidSiCTM3st)$(shell sbatch --parsable --dependency=afterok:$(jidSiCTM3bw)  /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_star_pair.sh  /biodb/genomes/homo_sapiens/GRCh38_107/star \
+	/prj/2024_08_Human/bowtie/bwt_SiC_TM_3_1.fastq.gz  /prj/2024_08_Human/bowtie/bwt_SiC_TM_3_2.fastq.gz  /prj/2024_08_Human/star/str_SiC_TM_3  /biodb/genomes/homo_sapiens/GRCh38_107/GRCh38.107.chr_patch_hapl_scaff.gtf))
+	echo " jid_Atria_1st -> $(jidSiCTM3st)"
+
+/prj/2024_08_Human/star/str_SiC_TM_4Aligned.sortedByCoord.out.bam:
+	$(eval jidSiCTM4st:=$(jidSiCTM4st)$(shell sbatch --parsable --dependency=afterok:$(jidSiCTM4bw)  /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_star_pair.sh  /biodb/genomes/homo_sapiens/GRCh38_107/star \
+	/prj/2024_08_Human/bowtie/bwt_SiC_TM_4_1.fastq.gz  /prj/2024_08_Human/bowtie/bwt_SiC_TM_4_2.fastq.gz  /prj/2024_08_Human/star/str_SiC_TM_4  /biodb/genomes/homo_sapiens/GRCh38_107/GRCh38.107.chr_patch_hapl_scaff.gtf))
+	echo " jid_Atria_1st -> $(jidSiCTM4st)"
+
+
+
+
+
 
 
 # clean:
