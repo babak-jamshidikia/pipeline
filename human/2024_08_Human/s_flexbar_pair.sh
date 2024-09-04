@@ -12,7 +12,7 @@
 
 
 # check if we have 3 arguments
-if [ ! $# == 3 ]; then
+if [ ! $# == 4 ]; then
   echo "Usage: $0 [Read 1 file] [target dir e.g. /tmp/]"
   exit
 fi
@@ -22,9 +22,12 @@ echo "start"
 # $2 -> Read 2
 # $3 -> Target directory
 
-echo  "$1  read =  " $1
-echo  "$2 target = " $2
+echo  "$1  read1 =  " $1
+echo  "$2  read2 = " $2
+echo  "target directory = " $3
+echo  "target name =  " $4  
 
+target=$4
 # run on 10 CPUs
 # compress with bz2
 # only 30nt or longer
@@ -32,6 +35,6 @@ echo  "$2 target = " $2
 # quality min phred 28
 # use sanger quality values (i.e. Illumina 1.9+ encoding)
 
-flexbar -r $1 -p $2 -t $3 -n 15 -z GZ -m 30 -u 0  -q TAIL -qt 28 -as "AGATCGGAAGAG" -qf sanger -j
+flexbar -r $1 -p $2 -t $3/$target -n 15 -z GZ -m 30 -u 0  -q TAIL -qt 28 -as "AGATCGGAAGAG" -qf sanger -j
 
 echo "end"
