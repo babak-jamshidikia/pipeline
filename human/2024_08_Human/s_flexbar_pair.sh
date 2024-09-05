@@ -6,9 +6,11 @@
 
 #SBATCH -n 1
 #SBATCH -N 1
-#SBATCH -c 20
-#SBATCH --mem=64G
+#SBATCH -c 16
+#SBATCH --mem=10G
 #SBATCH -J "flexbar single"
+#SBATCH --mail-type=END,FAIL,TIME_LIMIT_80
+#SBATCH --mail-user=bjamshidkia@arizona.edu
 
 
 # check if we have 3 arguments
@@ -35,6 +37,6 @@ target=$4
 # quality min phred 28
 # use sanger quality values (i.e. Illumina 1.9+ encoding)
 
-flexbar -r $1 -p $2 -t $3/$target -n 15 -z GZ -m 30 -u 0  -q TAIL -qt 28 -as "AGATCGGAAGAG" -qf sanger -j
+flexbar -r $1 -p $2 -t $3/$target -n 16 -z GZ -m 30 -u 0  -q TAIL -qt 28 -as "AGATCGGAAGAG" -qf sanger -j
 
 echo "end"

@@ -10,11 +10,11 @@
 
 #SBATCH -n 1
 #SBATCH -N 1
-#SBATCH -c 40
-#SBATCH --mem=400G
+#SBATCH -c 32
+#SBATCH --mem=64G
 #SBATCH -J "STAR genome alignment"
 #SBATCH --mail-type=END,FAIL,TIME_LIMIT_80
-#SBATCH --mail-user=tobias.jakobi@med.uni-heidelberg.de
+#SBATCH --mail-user=bjamshidkia@arizona.edu
 
 module load star
 #module load subread
@@ -47,7 +47,7 @@ echo "gtf file  =  " $5
 
 
 
-STAR --genomeDir $1 --runThreadN 5 --readFilesIn $2 $3 --sjdbGTFfile $5 --readFilesCommand zcat --outFileNamePrefix $4 --outSAMtype BAM SortedByCoordinate --outSAMstrandField intronMotif --quantMode GeneCounts --outReadsUnmapped Fastx --outWigType bedGraph --genomeLoad NoSharedMemory  
+STAR --genomeDir $1 --runThreadN 32 --readFilesIn $2 $3 --sjdbGTFfile $5 --readFilesCommand zcat --outFileNamePrefix $4 --outSAMtype BAM SortedByCoordinate --outSAMstrandField intronMotif --quantMode GeneCounts --outReadsUnmapped Fastx --outWigType bedGraph --genomeLoad NoSharedMemory  
 
 # --outFilterScoreMinOverLread 0 --outFilterMatchNminOverLread 0 --outFilterMatchNmin 0
 
