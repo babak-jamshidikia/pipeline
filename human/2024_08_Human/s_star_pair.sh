@@ -16,6 +16,7 @@
 #SBATCH --mail-type=END,FAIL,TIME_LIMIT_80
 #SBATCH --mail-user=bjamshidkia@arizona.edu
 
+
 module load star
 #module load subread
 

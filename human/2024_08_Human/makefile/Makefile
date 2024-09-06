@@ -60,59 +60,69 @@ SiC_TM_4_R2.fq.gz:
 
 #Rules for flexbar
 
-flexbar: making_flexbar_directory  /prj/2024_08_human/flexbar/SiC_1_1.fastq.gz /prj/2024_08_human/flexbar/SiC_2_1.fastq.gz \
-				   /prj/2024_08_human/flexbar/SiC_3_1.fastq.gz /prj/2024_08_human/flexbar/SiC_4_1.fastq.gz \
-				   /prj/2024_08_human/flexbar/SiC_TM_1_1.fastq.gz /prj/2024_08_human/flexbar/SiC_TM_2_1.fastq.gz \
-				   /prj/2024_08_human/flexbar/SiC_TM_3_1.fastq.gz /prj/2024_08_human/flexbar/SiC_TM_4_1.fastq.gz
+flexbar: making_flexbar_directory  /prj/2024_08_Human/flexbar/SiC_1_1.fastq.gz /prj/2024_08_Human/flexbar/SiC_2_1.fastq.gz \
+				   /prj/2024_08_Human/flexbar/SiC_3_1.fastq.gz /prj/2024_08_Human/flexbar/SiC_4_1.fastq.gz \
+				   /prj/2024_08_Human/flexbar/SiC_TM_1_1.fastq.gz /prj/2024_08_Human/flexbar/SiC_TM_2_1.fastq.gz \
+				   /prj/2024_08_Human/flexbar/SiC_TM_3_1.fastq.gz /prj/2024_08_Human/flexbar/SiC_TM_4_1.fastq.gz
 
 making_flexbar_directory: 
 	
+
 	echo "making directory for flexbar"
 	echo "     "
 	
-	mkdir /prj/2024_08_Human/flexbar 
+	mkdir -pv /prj/2024_08_Human/flexbar 
 
 #SiC
-/prj/2024_08_human/flexbar/SiC_1_1.fastq.gz:
+/prj/2024_08_Human/flexbar/SiC_1_1.fastq.gz:
 	$(eval jidSiC1fl:= $(jidSiC1fl)$(shell sbatch --parsable /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_flexbar_pair.sh  SiC_1_R1.fq.gz \
                                                      SiC_1_R2.fq.gz  /prj/2024_08_Human/flexbar/ SiC_1))
 	echo " jid_SiC_1fl ->  $(jidSiC1fl)"
 
-/prj/2024_08_human/flexbar/SiC_2_1.fastq.gz:
+/prj/2024_08_Human/flexbar/SiC_2_1.fastq.gz:
 	$(eval jidSiC2fl:=$(jidSiC2fl)$(shell sbatch  --parsable  /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_flexbar_pair.sh SiC_2_R1.fq.gz \
                                                     SiC_2_R2.fq.gz  /prj/2024_08_Human/flexbar/ SiC_2))
 	echo " jid_SiC_2fl -> $(jidSiC2fl)"
 
-/prj/2024_08_human/flexbar/SiC_3_1.fastq.gz:
+/prj/2024_08_Human/flexbar/SiC_3_1.fastq.gz:
 	$(eval jidSiC3fl:=$(jidSiC3fl)$(shell sbatch  --parsable /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_flexbar_pair.sh SiC_3_R1.fq.gz \
                                                     SiC_3_R2.fq.gz  /prj/2024_08_Human/flexbar/ SiC_3))
 	echo " jid_SiC_3fl -> $(jidSiC3fl)"
 
-/prj/2024_08_human/flexbar/SiC_4_1.fastq.gz:
+/prj/2024_08_Human/flexbar/SiC_4_1.fastq.gz:
 	$(eval jidSiC4fl:=$(jidSiC4fl)$(shell sbatch  --parsable /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_flexbar_pair.sh SiC_4_R1.fq.gz \
                                                     SiC_4_R2.fq.gz  /prj/2024_08_Human/flexbar/ SiC_4))
 	echo " jid_SiC_4fl -> $(jidSiC4fl)"
 
 # SiC_TM
 
-/prj/2024_08_human/flexbar/SiC_TM_1_1.fastq.gz:
+/prj/2024_08_Human/flexbar/SiC_TM_1_1.fastq.gz:
 	$(eval jidSiCTM1fl:=$(jidSiCTM1fl)$(shell sbatch --parsable /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_flexbar_pair.sh SiC_TM_1_R1.fq.gz \
                                                     SiC_TM_1_R2.fq.gz  /prj/2024_08_Human/flexbar/ SiC_TM_1))
 	echo " jid_SIC_TM_1fl -> $(jidSiCTM1fl)"
 
-/prj/2024_08_human/flexbar/SiC_TM_2_1.fastq.gz:
+/prj/2024_08_Human/flexbar/SiC_TM_2_1.fastq.gz:
 	$(eval jidSiCTM2fl:=$(jidSiCTM2fl)$(shell sbatch  --parsable  /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_flexbar_pair.sh SiC_TM_2_R1.fq.gz \
                                                     SiC_TM_2_R2.fq.gz  /prj/2024_08_Human/flexbar/ SiC_TM_2))
 	echo " jid_SiC_TM_2fl -> $(jidSiCTM2fl)"
 
-/prj/2024_08_human/flexbar/SiC_TM_3_1.fastq.gz:
+/prj/2024_08_Human/flexbar/SiC_TM_3_1.fastq.gz:
 	$(eval jidSiCTM3fl:=$(jidSiCTM3fl)$(shell sbatch --parsable  /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_flexbar_pair.sh SiC_TM_3_R1.fq.gz \
                                                      SiC_TM_3_R2.fq.gz  /prj/2024_08_Human/flexbar/ SiC_TM_3))
 	echo " jid_SiC_TM_3fl -> $(jidSiCTM3fl)"
 
-/prj/2024_08_human/flexbar/SiC_TM_4_1.fastq.gz:
-        $(eval jidSiCTM4fl:=$(jidSiCTM4fl)$(shell sbatch --parsable  /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_flexbar_pair.sh SiC_TM_4_R1.fq.gz \
-						     SiC_TM_4_R2.fq.gz  /prj/2024_08_Human/flexbar/ SiC_TM_4))
+/prj/2024_08_Human/flexbar/SiC_TM_4_1.fastq.gz:
+	$(eval jidSiCTM4fl:=$(jidSiCTM4fl)$(shell sbatch --parsable  /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_flexbar_pair.sh SiC_TM_4_R1.fq.gz \
+                                                     SiC_TM_4_R2.fq.gz  /prj/2024_08_Human/flexbar/ SiC_TM_4))
+	echo " jid_SiC_TM_4fl -> $(jidSiCTM4fl)"
+
+
+
+
+
+#/prj/2024_08_Human/flexbar/SiC_TM_4_1.fastq.gz:
+#        $(eval jidSiCTM4fl:=$(jidSiCTM4fl)$(shell sbatch --parsable  /home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_flexbar_pair.sh SiC_TM_4_R1.fq.gz \
+#						     SiC_TM_4_R2.fq.gz  /prj/2024_08_Human/flexbar/ SiC_TM_4))
 #	echo " jid_SiC_TM_4fl -> $(jidSiCTM4fl)"
 
 #Rules for bowtie
@@ -134,7 +144,7 @@ bowtie: makingbowtiefolder /prj/2024_08_Human/bowtie/SiC_1_1.fastq.gz /prj/2024_
 			   /prj/2024_08_Human/bowtie/SiC_TM_3_1.fastq.gz /prj/2024_08_Human/bowtie/SiC_TM_4_1.fastq.gz
 
 makingbowtiefolder:
-	mkdir /prj/2024_08_Human/bowtie
+	mkdir -pv /prj/2024_08_Human/bowtie
 
 #SiC
 /prj/2024_08_Human/bowtie/SiC_1_1.fastq.gz:  #/prj/2024_08_Human/bowtie/bwt_SiC_1_2.fastq.gz: 
@@ -204,7 +214,7 @@ STAR: makingSTARfolder  /prj/2024_08_Human/star/SiC_1Aligned.sortedByCoord.out.b
 			/prj/2024_08_Human/star/SiC_TM_3Aligned.sortedByCoord.out.bam /prj/2024_08_Human/star/SiC_TM_4Aligned.sortedByCoord.out.bam
 
 makingSTARfolder:
-	mkdir  /prj/2024_08_Human/star
+	mkdir -pv /prj/2024_08_Human/star
 
 #---------------- just for test
 
