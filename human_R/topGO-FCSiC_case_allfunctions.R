@@ -156,7 +156,7 @@ funchaetmap <- function(){
                          show_rownames = FALSE,
                          show_colnames = TRUE,
                          border_color = NA,
-                         main = "Atria vs Vent  \n Heatmap based on Log10(RPKM) values ",
+                         main = "SiC vs SiC_TM  \n Heatmap based on Log10(RPKM) values ",
                          scale = "row",
                          
   )
@@ -313,10 +313,10 @@ basic_plot_Up
 }
 
 funcGOGroupGene <-function(ont,TopN,P_valcutoff,updown){
-#  ont = "BP"
-#  TopN = 20
-#  P_valcutoff = 0.05
-#  updown = "up"
+  #ont = "BP"
+  #TopN = 20
+  #P_valcutoff = 0.05
+  #updown = "up"
   
   if(!dir.exists(paste0("~/Desktop/BIOINFORMATICS_jacobi/graphs/HumanHeatmaps/",ont))){
     system(paste0("mkdir ~/Desktop/BIOINFORMATICS_jacobi/graphs/HumanHeatmaps/",ont))
@@ -406,7 +406,7 @@ funcGOGroupGene <-function(ont,TopN,P_valcutoff,updown){
     RPKMHeatGenename <- inner_join(RPKMHeatGenename,Termdata,c("GID" = "ensembl_gene_id"))
     RPKMHeatGenename <- filter(RPKMHeatGenename,RPKMHeatGenename$external_gene_name != "")
     rownames(RPKMHeatGenename) <- RPKMHeatGenename$external_gene_name
-    RPKMHeatGenename <- RPKMHeatGenename[-c(7,8)] 
+    RPKMHeatGenename <- RPKMHeatGenename[-c(9,10,11,12)] 
     matRPKMHeat <- as.matrix(RPKMHeatGenename)
     # preparing PDF file
     pdf(file = paste0("~/Desktop/BIOINFORMATICS_jacobi/graphs/HumanHeatmaps/",ont,"/",updown,"/",sprintf("%004d", i),"_" , str_replace_all(allResup2$GO.ID[i],":","_"),"_",str_replace_all(allResup2$Term[i]," ","_"),".pdf"),height = 2 + (nrow(matRPKMHeat)*0.08))
@@ -442,5 +442,5 @@ funcGOGroupGene <-function(ont,TopN,P_valcutoff,updown){
 
 funchaetmap()
 funcGlimavolc(varfilename = "H1")
-funcGOBasicplot("BP",20,0.05,"up")
+funcGOBasicplot("BP",20,0.05,"down")
 funcGOGroupGene("BP",20,0.05,"up")
