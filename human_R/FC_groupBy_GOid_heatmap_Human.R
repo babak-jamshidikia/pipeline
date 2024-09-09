@@ -33,6 +33,7 @@ RPKM4
 #RPKM4 <- filter(RPKM4,row.names(RPKM4) != "ENSMUSG00000022956")
 # ------------------
 RPKM4[nrow(RPKM4) + 1,] <- row
+RPKM4
 
 
 
@@ -48,7 +49,7 @@ y<-normLibSizes(y)
 y$samples
 plotMDS(y)
 
-name <- c("SiC_1","SiC_2","SiC_3","SiC_4","SiC_TM_1","SiC_TM_2","SiC_TM_3","SiC_TM_4")
+sname <- c("SiC","SiC","SiC","SiC","SiC_TM","SiC_TM","SiC_TM","SiC_TM")
 #snum <-c(1,2,3,1,2,3)
 data.frame(Sample = colnames(y),sname)
 design <- model.matrix(~sname)
@@ -127,10 +128,10 @@ topDiffGenes <- function(allScore) {
 }
 
 funcGO <-function(ont,TopN,P_valcutoff,updown){
-ont = "BP"
-TopN = 20
-P_valcutoff = 0.05
-updown = "up"
+#ont = "BP"
+#TopN = 20
+#P_valcutoff = 0.05
+#updown = "up"
 
   if(!dir.exists(paste0("~/Desktop/BIOINFORMATICS_jacobi/graphs/HeatMaps/",ont))){
   system(paste0("mkdir ~/Desktop/BIOINFORMATICS_jacobi/graphs/HeatMaps/",ont))
@@ -193,7 +194,7 @@ updown = "up"
   wb <- createWorkbook()
   
 for (i in 1:nrow(allResUp) ){
-i = 2
+#i = 1
 
 #print(allResUp$GO.ID[i])
   gt <- as.data.frame(genesInTerm(go_up_bp,allResUp$GO.ID[i]))
@@ -227,15 +228,15 @@ i = 2
   RPKMHeatGenename <- inner_join(RPKMHeatGenename,Termdata,c("GID" = "ensembl_gene_id"))
   RPKMHeatGenename <- filter(RPKMHeatGenename,RPKMHeatGenename$external_gene_name != "")
   rownames(RPKMHeatGenename) <- RPKMHeatGenename$external_gene_name
-  RPKMHeatGenename <- RPKMHeatGenename[-c(7,8)] 
+  RPKMHeatGenename <- RPKMHeatGenename[-c(9,10,11,12)] 
   matRPKMHeat <- as.matrix(RPKMHeatGenename)
   # preparing PDF file
   pdf(file = paste0("~/Desktop/BIOINFORMATICS_jacobi/graphs/HeatMaps/",ont,"/",updown,"/",sprintf("%004d", i),"_" , str_replace_all(allResup2$GO.ID[i],":","_"),"_",str_replace_all(allResup2$Term[i]," ","_"),".pdf"),height = 2 + (nrow(matRPKMHeat)*0.08))
   #making the heatmap visual
   my_heatmap <- pheatmap(matRPKMHeat,
                          cluster_rows = FALSE,
-                         #color = viridis(n = 2000,option = "magma"),
-                         #                   legend_breaks = c(-2,0,2),
+                         color = viridis(n = 2000,option = "magma"),
+                                            legend_breaks = c(-2,0,2),
                          show_rownames = TRUE,
                          show_colnames = TRUE,
                          border_color = NA,

@@ -284,6 +284,8 @@ allResup2 <- allResUp
 allResup2$Elim <- -log2(as.numeric(allResup2$Elim))
 
 
+#pdf(file = paste0("~/Desktop/BIOINFORMATICS_jacobi/graphs/basicplot/",ont,"_",updown,".pdf"),height = 4 + (nrow(matRPKMHeat)*0.08))
+
 basic_plot_Up <- ggplot(allResup2, aes(x = reorder(Term,Elim),y= Elim)) +
   geom_bar(stat = "identity", fill = graphfill) + coord_flip() +
   labs(title = paste("Result ",updown,ont,".pdf"),
@@ -291,6 +293,8 @@ basic_plot_Up <- ggplot(allResup2, aes(x = reorder(Term,Elim),y= Elim)) +
        y = "-log2(Elim)")
 
 basic_plot_Up
+
+#dev.off()
 #ggsave(
  # filename = paste("Result ",updown,ont,".pdf"),
 #  plot = basic_plot_Up,
@@ -310,7 +314,7 @@ basic_plot_Up
 #writeDataTable(wb, sheet = 3, x = allResboth, rowNames = TRUE);
 #saveWorkbook(wb, "~/Desktop/BIOINFORMATICS_jacobi/ALLRES.xlsx", overwrite = TRUE)
 
-}
+} # end of funcbasic plot
 
 funcGOGroupGene <-function(ont,TopN,P_valcutoff,updown){
   #ont = "BP"
@@ -409,7 +413,11 @@ funcGOGroupGene <-function(ont,TopN,P_valcutoff,updown){
     RPKMHeatGenename <- RPKMHeatGenename[-c(9,10,11,12)] 
     matRPKMHeat <- as.matrix(RPKMHeatGenename)
     # preparing PDF file
-    pdf(file = paste0("~/Desktop/BIOINFORMATICS_jacobi/graphs/HumanHeatmaps/",ont,"/",updown,"/",sprintf("%004d", i),"_" , str_replace_all(allResup2$GO.ID[i],":","_"),"_",str_replace_all(allResup2$Term[i]," ","_"),".pdf"),height = 2 + (nrow(matRPKMHeat)*0.08))
+    str_replace_all(allResup2$Term[i],"/","_")
+    
+    Termi <- str_replace_all(allResup2$Term[i],"/","_")
+    
+    pdf(file = paste0("~/Desktop/BIOINFORMATICS_jacobi/graphs/HumanHeatmaps/",ont,"/",updown,"/",sprintf("%004d", i),"_" , str_replace_all(allResup2$GO.ID[i],":","_"),"_",str_replace_all(Termi," ","_"),".pdf"),height = 4 + (nrow(matRPKMHeat)*0.08))
     #making the heatmap visual
     my_heatmap <- pheatmap(matRPKMHeat,
                            cluster_rows = FALSE,
@@ -442,5 +450,6 @@ funcGOGroupGene <-function(ont,TopN,P_valcutoff,updown){
 
 funchaetmap()
 funcGlimavolc(varfilename = "H1")
-funcGOBasicplot("BP",20,0.05,"down")
-funcGOGroupGene("BP",20,0.05,"up")
+funcGOBasicplot("MF",20,0.05,"up")
+funcGOGroupGene("MF",20,0.05,"down")
+
