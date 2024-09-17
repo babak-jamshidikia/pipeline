@@ -284,16 +284,17 @@ allResup2 <- allResUp
 allResup2$Elim <- -log2(as.numeric(allResup2$Elim))
 
 
-#pdf(file = paste0("~/Desktop/BIOINFORMATICS_jacobi/graphs/basicplot/",ont,"_",updown,".pdf"),height = 4 + (nrow(matRPKMHeat)*0.08))
+#pdf(file = paste0("~/Desktop/BIOINFORMATICS_jacobi/graphs/basicplot/",ont,"_",updown,".pdf"),height = 11,width = 8)
 
 basic_plot_Up <- ggplot(allResup2, aes(x = reorder(Term,Elim),y= Elim)) +
   geom_bar(stat = "identity", fill = graphfill) + coord_flip() +
-  labs(title = paste("Result ",updown,ont,".pdf"),
+  labs(title = paste0("SIC vs SIC_TM \n",ont," ",updown),
        x = "Term",
-       y = "-log2(Elim)")
+       y = "-log2(pval)")
+
 
 basic_plot_Up
-
+#ggsave("~/Desktop/BIOINFORMATICS_jacobi/graphs/basicplot/1.pdf")
 #dev.off()
 #ggsave(
  # filename = paste("Result ",updown,ont,".pdf"),
@@ -448,8 +449,30 @@ funcGOGroupGene <-function(ont,TopN,P_valcutoff,updown){
   
 }  # end of function
 
+funcGoBasicplotPDF <- function(topNum,pvaluecutoff){
+
+#  pdf(file = "~/Desktop/BIOINFORMATICS_jacobi/graphs/basicplot/basicplot.pdf",height = 11,width = 8 )
+  plot_list = list()
+  i <- 1
+  for (ontolg in list("BP","CC","MF")){
+  
+   for (Updownlist in list("up","down")){
+      plot_list[[i]] <- funcGOBasicplot(ontolg,topNum,pvaluecutoff,Updownlist)
+      #funcGOBasicplot("BP",20,0.05,"up")
+      i <- i+1  
+   }
+    
+  }
+  
+  class(plot_list) <- c("arrangelist", class(plot_list))
+ #ggsave("~/Desktop/BIOINFORMATICS_jacobi/graphs/basicplot/basicplot.pdf",plot_list,height = 11,width = 8,device = "pdf")
+  pdf(file = "~/Desktop/BIOINFORMATICS_jacobi/graphs/basicplot/basicplot.pdf",height = 11,width = 8 )
+print(plot_list)
+  dev.off()
+}
+
 funchaetmap()
 funcGlimavolc(varfilename = "H1")
-funcGOBasicplot("MF",20,0.05,"up")
-funcGOGroupGene("MF",20,0.05,"down")
-
+funcGOBasicplot("BP",20,0.05,"up")
+funcGOGroupGene("BP",20,0.05,"down")
+funcGoBasicplotPDF(20,0.05)
