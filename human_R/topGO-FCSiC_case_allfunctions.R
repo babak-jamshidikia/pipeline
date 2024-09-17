@@ -225,8 +225,8 @@ dfTT2$diffexpressed[dfTT2$logFC < 0 & dfTT2$FDR < (0.05)] <- "DOWN"
 
 nUpdfTT2 <- length(dfTT2$diffexpressed[dfTT2$logFC > 0 & dfTT2$FDR < (0.05)])
 nDwdfTT2 <- length(dfTT2$diffexpressed[dfTT2$logFC < 0 & dfTT2$FDR < (0.05)])
-dfTT2$delabel <- ifelse(dfTT2$external_gene_name %in% head(dfTT2[order(dfTT2$logFC,decreasing =  TRUE), "external_gene_name"], 10), dfTT2$external_gene_name , NA)
-dfTT2$delabel <- ifelse(dfTT2$external_gene_name %in% head(dfTT2[order(dfTT2$logFC ,decreasing = FALSE), "external_gene_name"], 13), dfTT2$external_gene_name ,dfTT2$delabel)
+dfTT2$delabel <- ifelse(dfTT2$external_gene_name %in% head(dfTT2[order(dfTT2$logFC,decreasing =  TRUE), "external_gene_name"], 18), dfTT2$external_gene_name , NA)
+dfTT2$delabel <- ifelse(dfTT2$external_gene_name %in% head(dfTT2[order(dfTT2$logFC ,decreasing = FALSE), "external_gene_name"], 11), dfTT2$external_gene_name ,dfTT2$delabel)
 p2 <- ggplot(dfTT2,aes(x= logFC,y= LOGFDR,col = diffexpressed,label = delabel)) +
   geom_vline(xintercept = 0,col = "black",linetype = "dashed")+
   geom_hline(yintercept = -log10(0.05),col= "black",linetype = "dashed")+
@@ -241,10 +241,11 @@ p2 <- ggplot(dfTT2,aes(x= logFC,y= LOGFDR,col = diffexpressed,label = delabel)) 
   #scale_y_continuous(breaks = seq(0,5,1))+
   ggtitle("Volcano Plot") +
   #geom_text_repel(color = "black", max.overlaps = Inf,xlim = c(-Inf, Inf), ylim = c(-Inf, Inf))+
-  geom_label_repel(fill = "white",max.overlaps = Inf, xlim = c(-Inf, Inf), ylim = c(-Inf, Inf),color = "black",box.padding = 0.25,alpha = 0.7)
+  geom_label_repel(fill = "white",max.overlaps = Inf, xlim = c(-Inf, Inf), ylim = c(-Inf, Inf),color = "black",box.padding = 0.7,alpha = 0.7)
   
-
-p2
+pdf(file= "/home/bjamshidikia/Desktop/BIOINFORMATICS_jacobi/graphs/volcanoplot/volc_1.pdf",height = 12,width = 10)
+  print(p2)
+dev.off()
 #dfTT2
 }
 
@@ -464,15 +465,16 @@ funcGoBasicplotPDF <- function(topNum,pvaluecutoff){
     
   }
   
-  class(plot_list) <- c("arrangelist", class(plot_list))
+  #class(plot_list) <- c("arrangelist", class(plot_list))
  #ggsave("~/Desktop/BIOINFORMATICS_jacobi/graphs/basicplot/basicplot.pdf",plot_list,height = 11,width = 8,device = "pdf")
   pdf(file = "~/Desktop/BIOINFORMATICS_jacobi/graphs/basicplot/basicplot.pdf",height = 11,width = 8 )
-print(plot_list)
+  print(plot_list)
   dev.off()
 }
 
 funchaetmap()
-funcGlimavolc(varfilename = "H1")
+funcGlimavolc(varfilename = "H5")
 funcGOBasicplot("BP",20,0.05,"up")
 funcGOGroupGene("BP",20,0.05,"down")
 funcGoBasicplotPDF(20,0.05)
+funcVolcano()
