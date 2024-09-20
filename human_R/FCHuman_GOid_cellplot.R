@@ -184,7 +184,7 @@ updown = "both"
   TTtoAllres$logFC <- log2(TTtoAllres$logFC)
   
   d<-duplicated(TTtoAllres$Term)
-  #TTtoAllres <-TTtoAllres[!d,]
+TTtoAllres <-TTtoAllres[!d,]
   #ls <- list()
   #dfgene1 <- data.frame(
   #  goid = character()
@@ -201,16 +201,6 @@ updown = "both"
   xs <- subset(xs, FDR < 0.05)
   TTtoAllres$GenesSignificant <- lapply(TTtoAllres$GenesAnnotated, intersect, rownames(xs)) # extract genes
   
-  ei.rows <- mclapply(TTtoAllres$GenesSignificant, function (y) {
-    if (length(y)) as.list(xs[y,,drop=FALSE])
-    else as.list(rep(NA_real_, length(xs)))
-  }, mc.cores = 10)
-  ei <- mclapply(names(xs), function(z) {
-    lapply(ei.rows, "[[", z)
-  }, mc.cores = 10)
-  ei <- structure(ei, names = names(xs), row.names = seq(nrow(TTtoAllres)), class = "data.frame")
-  row.names(ei) <- NULL
-  TTtoAllres <- data.frame(TTtoAllres, ei, stringsAsFactors = FALSE, check.names = FALSE)
   #return(TTtoAllres)
   
   
