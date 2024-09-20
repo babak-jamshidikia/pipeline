@@ -18,7 +18,7 @@ library(stringr)
 library(BiocParallel)
 library(DESeq2)
 library(annotate)
-library(prob)
+
 
 
 fc <- readRDS("/home/bjamshidikia/srvrdata/fcdataHuman.rds")
