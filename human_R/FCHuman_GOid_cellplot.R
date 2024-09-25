@@ -168,53 +168,86 @@ updown = "both"
                       orderBy= "Elim",topNodes = TopN,numChar = 100)
   allResUp             
   allResup2 <- allResUp
-  allResup2$Elim <- -log2(as.numeric(allResup2$Elim))
+  #allResup2$Elim <- -log2(as.numeric(allResup2$Elim))
+  allResup2$LogEnrich <-  log2(allResup2$Significant/allResup2$Expected)
+  #tt$table$logFC <- -log2(tt$table$logFC)
+  colnames(allResup2) <- c("GO.ID","Term","Annotated","Significant","Expected","pvalCutOff","LogEnrich")
   
   
-  
-  ensembl <- useEnsembl( biomart = "genes",dataset= "hsapiens_gene_ensembl")
-  godataTT <- getBM(attributes = c("ensembl_gene_id","go_id"), filters = "ensembl_gene_id", values =tt$table$GeneID, mart = ensembl)
-  
-  TTtoAllres <- inner_join(tt$table,godataTT,c("GeneID" = "ensembl_gene_id"))
-  TTtoAllres <- inner_join(TTtoAllres,allResUp,c("go_id" = "GO.ID" ))
-  TTtoAllres$LogEnrich <-  log2(TTtoAllres$Significant/TTtoAllres$Expected)
-  TTtoAllres <- TTtoAllres[-c(1)]
-  TTtoAllres$Elim <- as.numeric(str_replace_all(TTtoAllres$Elim, "[^0-9e\\-\\.]*", ""))
-  
-  TTtoAllres$logFC <- log2(TTtoAllres$logFC)
-  
-  d<-duplicated(TTtoAllres$Term)
-TTtoAllres <-TTtoAllres[!d,]
-  #ls <- list()
-  #dfgene1 <- data.frame(
-  #  goid = character()
-  #)
   
   
   
   ga <- genesInTerm(go_up_bp) # GenesAnnotated | list of genes per go-terms
-  ga <- ga[TTtoAllres$go_id] # eliminate missing terms
+  ga <- ga[allResup2$GO.ID] # eliminate missing terms
+  ga2 <- ga
   names(ga) <- NULL
-  TTtoAllres$GenesAnnotated <- ga
-  
-  xs <- TTtoAllres[,c("FDR", "logFC")] # significant stats subset
+  allResup2$GenesAnnotated <- ga
+
+  xs <- TTgoid [,c("FDR", "logFC")] # significant stats subset
   xs <- subset(xs, FDR < 0.05)
-  TTtoAllres$GenesSignificant <- lapply(TTtoAllres$GenesAnnotated, intersect, rownames(xs)) # extract genes
+  allResup2$GenesSignificant <- lapply(allResup2$GenesAnnotated, intersect, rownames(xs)) # extract genes
   
+  gadf <- ldply (ga2, data.frame)
+  colnames(gadf) <- c("GO.ID","GeneID")
+  ttdf <- as.data.frame(tt)
+  TTgoid <- inner_join(gadf,ttdf,c("GeneID" = "GeneID" ))
+  
+  goidlist <- allResup2$GO.ID
+  
+  # TTgoidnd <- TTgoid[!d,]
+  
+  
+  lsfc <- list()
+  lspadj <- list()
+  i <- 1
+  for(Gid in goidlist) {
+    
+    print(Gid)
+    Fgoid <-  filter(TTgoid,TTgoid$GO.ID == Gid)
+    print(Fgoid)
+    lsfc[i] <- list(Fgoid$logFC)
+    lspadj[i] <- list(Fgoid$FDR)
+  #  lsfc <- list(lsfc)
+    #print(lsfc)
+    #print(lspadj)
+  #  ind <- match(Gid,allResup2$GO.ID)
+  #  allResup2[ind,"log2Foldchange"] <- lsfc
+    
+    #rows_update(allResup2, tibble( "log2Foldchange"= lsfc, "GO.ID" = Gid), by = "GO.ID")
+    i <- i +1
+    }
+  #print(i)
+  
+  allResup2$log2Foldchange <- lsfc
+  allResup2$padj <- lspadj
+  # 
+  
+  #allResup2$log2Foldchange <- -log2(allResup2$log2Foldchange)
   #return(TTtoAllres)
   
+  #TTtoAllres %>% relocate(go_id,Term,Annotated,Significant,Expected, .before = logFC)
+  #TTtoAllres <- TTtoAllres[-c(3)]
+  
+  #ei.rows <- mclapply(allResup2$GenesSignificant, function (y) {
+  #  if (length(y)) as.list(xs[y,,drop=FALSE])
+  #  else as.list(rep(NA_real_, length(xs)))
+  #}, mc.cores = 10)
+  #ei <- mclapply(names(xs), function(z) {
+  #  lapply(ei.rows, "[[", z)
+  #}, mc.cores = 10)
+  #ei <- structure(ei, names = names(xs), row.names = seq(nrow(r)), class = "data.frame")
+  #row.names(ei) <- NULL
+  #allResup2 <- data.frame(allResup2, ei, stringsAsFactors = FALSE, check.names = FALSE)
   
   
   
   
   
-  
-  
-  x <- subset(TTtoAllres,Elim <= 0.05 & Significant > 20)
+  x <- subset(allResup2,pvalCutOff <= 0.05 & Significant > 20)
   x <- x[order(-x$LogEnrich),]
   pdf(file = "/home/bjamshidikia/Desktop/BIOINFORMATICS_jacobi/graphs/cellplot/p2.pdf")
   cell.plot(x = setNames(x$LogEnrich,x$Term),
-            cells = x$logFC,
+            cells = x$log2Foldchange ,
             main = " GO enrichment (Not vs CLL)  ",
             x.mar = c(0.4,0),
             key.n = 7,
@@ -228,9 +261,9 @@ TTtoAllres <-TTtoAllres[!d,]
   dev.off()
 
   
-  pdf(file = "/home/bjamshidikia/Desktop/BIOINFORMATICS_jacobi/graphs/cellplot/S2.pdf")
+  pdf(file = "/home/bjamshidikia/Desktop/BIOINFORMATICS_jacobi/graphs/cellplot/S3.pdf")
   sym.plot( x= setNames(x$LogEnrich,x$Term),
-            cells = x$logFC,
+            cells = x$log2Foldchange,
             x.annotated = x$Annotated,
             main = "GO enrichment (NoT vs CLL)",
             x.mar = c(0.47,0),
