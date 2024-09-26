@@ -18,8 +18,7 @@ library(stringr)
 library(BiocParallel)
 library(DESeq2)
 library(annotate)
-
-
+library(plyr)
 
 fc <- readRDS("/home/bjamshidikia/srvrdata/fcdataHuman.rds")
 head(fc$counts)
@@ -132,6 +131,10 @@ topDiffGenes <- function(allScore) {
 }
 
 #funcGO <-function(ont,TopN,P_valcutoff,updown){
+pdf(file = "/home/bjamshidikia/Desktop/BIOINFORMATICS_jacobi/graphs/cellplot/allcellplot.pdf")
+for(onto in c("BP","CC","MF")){
+  
+
 ont = "BP"
 TopN = 20
 P_valcutoff = 0.05
@@ -183,14 +186,18 @@ updown = "both"
   names(ga) <- NULL
   allResup2$GenesAnnotated <- ga
 
-  xs <- TTgoid [,c("FDR", "logFC")] # significant stats subset
-  xs <- subset(xs, FDR < 0.05)
-  allResup2$GenesSignificant <- lapply(allResup2$GenesAnnotated, intersect, rownames(xs)) # extract genes
   
+    
   gadf <- ldply (ga2, data.frame)
   colnames(gadf) <- c("GO.ID","GeneID")
   ttdf <- as.data.frame(tt)
   TTgoid <- inner_join(gadf,ttdf,c("GeneID" = "GeneID" ))
+  xs <- TTgoid [,c("FDR", "logFC")] # significant stats subset
+  xs <- subset(xs, FDR < 0.05)
+  allResup2$GenesSignificant <- lapply(allResup2$GenesAnnotated, intersect, rownames(xs)) # extract genes
+  
+  
+  
   
   goidlist <- allResup2$GO.ID
   
@@ -202,9 +209,9 @@ updown = "both"
   i <- 1
   for(Gid in goidlist) {
     
-    print(Gid)
+  #  print(Gid)
     Fgoid <-  filter(TTgoid,TTgoid$GO.ID == Gid)
-    print(Fgoid)
+    #print(Fgoid)
     lsfc[i] <- list(Fgoid$logFC)
     lspadj[i] <- list(Fgoid$FDR)
   #  lsfc <- list(lsfc)
@@ -245,10 +252,10 @@ updown = "both"
   
   x <- subset(allResup2,pvalCutOff <= 0.05 & Significant > 20)
   x <- x[order(-x$LogEnrich),]
-  pdf(file = "/home/bjamshidikia/Desktop/BIOINFORMATICS_jacobi/graphs/cellplot/p2.pdf")
+  
   cell.plot(x = setNames(x$LogEnrich,x$Term),
             cells = x$log2Foldchange ,
-            main = " GO enrichment (Not vs CLL)  ",
+            main = paste0(" GO enrichment (SiC vs SiC_TM) \n  ",onto),
             x.mar = c(0.4,0),
             key.n = 7,
             y.mar = c(0.1,0),
@@ -258,21 +265,22 @@ updown = "both"
             space = 0.2,
   )
   
-  dev.off()
+ # dev.off()
 
   
-  pdf(file = "/home/bjamshidikia/Desktop/BIOINFORMATICS_jacobi/graphs/cellplot/S3.pdf")
+#  pdf(file = "/home/bjamshidikia/Desktop/BIOINFORMATICS_jacobi/graphs/cellplot/S3.pdf")
   sym.plot( x= setNames(x$LogEnrich,x$Term),
             cells = x$log2Foldchange,
             x.annotated = x$Annotated,
-            main = "GO enrichment (NoT vs CLL)",
+            main = paste0(" GO enrichment (SiC vs SiC_TM) \n  ",onto),
             x.mar = c(0.47,0),
             key.n = 7,
             cex = 1.6,
             axis.cex = 0.8,
             group.cex = 0.7
   )
-  dev.off()  
+}
+dev.off()  
   
   
   
