@@ -131,11 +131,11 @@ topDiffGenes <- function(allScore) {
 }
 
 #funcGO <-function(ont,TopN,P_valcutoff,updown){
-pdf(file = "/home/bjamshidikia/Desktop/BIOINFORMATICS_jacobi/graphs/cellplot/allcellplot.pdf")
+pdf(file = "/home/bjamshidikia/Desktop/BIOINFORMATICS_jacobi/graphs/cellplot/allcellplot.pdf",height = 20, width = 20)
 for(onto in c("BP","CC","MF")){
   
 
-ont = "BP"
+ont = onto
 TopN = 20
 P_valcutoff = 0.05
 updown = "both"
@@ -255,22 +255,21 @@ updown = "both"
   
   cell.plot(x = setNames(x$LogEnrich,x$Term),
             cells = x$log2Foldchange ,
-            main = paste0(" GO enrichment (SiC vs SiC_TM) \n  ",onto),
-            x.mar = c(0.4,0),
-            key.n = 7,
-            y.mar = c(0.1,0),
-            cex = 1.6,
-            cell.outer = 3,
-            bar.scale = 0.7,
-            space = 0.2,
-  )
+            main = paste0(" GO enrichment (SiC vs SiC_TM) ",onto),
+            x.mar = c(.04, 0), 
+            key.n = 7, 
+            y.mar = c(.08, 0), 
+            cex = 1.6, 
+            cell.outer = 1, 
+            bar.scale = 0.0001,
+            space = 0.05) 
   
  # dev.off()
 
   
 #  pdf(file = "/home/bjamshidikia/Desktop/BIOINFORMATICS_jacobi/graphs/cellplot/S3.pdf")
   sym.plot( x= setNames(x$LogEnrich,x$Term),
-            cells = x$log2Foldchange,
+           cells = x$log2Foldchange,
             x.annotated = x$Annotated,
             main = paste0(" GO enrichment (SiC vs SiC_TM) \n  ",onto),
             x.mar = c(0.47,0),
