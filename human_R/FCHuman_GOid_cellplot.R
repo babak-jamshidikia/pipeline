@@ -24,13 +24,13 @@ fc <- readRDS("/home/bjamshidikia/srvrdata/fcdataHuman.rds")
 head(fc$counts)
 head(fc)
 y <- DGEList(counts = fc$counts,genes = fc$annotation,group = c("SiC","SiC","SiC","SiC","SiC_TM","SiC_TM","SiC_TM","SiC_TM"))
-RPKM <-rpkm(y)
-RPKM1 <- as.data.frame(RPKM)
-RPKM4 <- filter_all(RPKM1,any_vars(. > 0))
+#RPKM <-rpkm(y)
+#RPKM1 <- as.data.frame(RPKM)
+#RPKM4 <- filter_all(RPKM1,any_vars(. > 0))
 
 
 
-RPKM4
+#RPKM4
 
 # removing duplicate data 
 
@@ -70,21 +70,6 @@ plotQLDisp(fit1)
 lrt <-glmLRT(fit)
 
 tt <- topTags(lrt,n=nrow(lrt), p.value=0.05)
-#ensembly1 <- useEnsembl( biomart = "genes",dataset= "mmusculus_gene_ensembl")
-#attriby1 <- c("external_gene_name","description","ensembl_gene_id")
-
-
-#filtersy1 <- "ensembl_gene_id"
-#valuey1 <-list(tt$table$GeneID)
-
-#datay1 <-getBM(attributes = attribM ,filters = filtersM , values = valueM ,mart =  ensembly1)
-
-#Ddatay1 <- duplicated(datay1$ensembl_gene_id)
-#datay1 <-datay1[!Ddatay1,]
-
-#jointy1 <- left_join(tt$table,datay1,by = c("GeneID" = "ensembl_gene_id"))
-
-
 
 
 colnames(design)
@@ -131,11 +116,11 @@ topDiffGenes <- function(allScore) {
 }
 
 #funcGO <-function(ont,TopN,P_valcutoff,updown){
-pdf(file = "/home/bjamshidikia/Desktop/BIOINFORMATICS_jacobi/graphs/cellplot/allcellplot.pdf",height = 20, width = 20)
+pdf(file = "/home/bjamshidikia/Desktop/BIOINFORMATICS_jacobi/graphs/cellplot/allcellplot-6.pdf",height = 5.96, width = 10)
 for(onto in c("BP","CC","MF")){
   
 
-ont = onto
+ont = onto # "CC"
 TopN = 20
 P_valcutoff = 0.05
 updown = "both"
@@ -171,6 +156,25 @@ updown = "both"
                       orderBy= "Elim",topNodes = TopN,numChar = 100)
   allResUp             
   allResup2 <- allResUp
+  
+  #--basicplot
+  
+  allresUpbasicplot <- allResUp
+  allresUpbasicplot$Elim <- -log2(as.numeric(allResup2$Elim))
+  
+  basic_plot <- ggplot(allresUpbasicplot, aes(x = reorder(Term,Elim),y= Elim)) +
+    geom_bar(stat = "identity", fill = graphfill) + coord_flip() +
+    labs(title = paste0("SIC vs SIC_TM \n",ont," ",updown),
+         x = "Term",
+         y = "-log2(pval)")
+  
+  
+  print(basic_plot)
+  
+  
+  
+  
+  
   #allResup2$Elim <- -log2(as.numeric(allResup2$Elim))
   allResup2$LogEnrich <-  log2(allResup2$Significant/allResup2$Expected)
   #tt$table$logFC <- -log2(tt$table$logFC)
@@ -214,13 +218,6 @@ updown = "both"
     #print(Fgoid)
     lsfc[i] <- list(Fgoid$logFC)
     lspadj[i] <- list(Fgoid$FDR)
-  #  lsfc <- list(lsfc)
-    #print(lsfc)
-    #print(lspadj)
-  #  ind <- match(Gid,allResup2$GO.ID)
-  #  allResup2[ind,"log2Foldchange"] <- lsfc
-    
-    #rows_update(allResup2, tibble( "log2Foldchange"= lsfc, "GO.ID" = Gid), by = "GO.ID")
     i <- i +1
     }
   #print(i)
@@ -229,55 +226,42 @@ updown = "both"
   allResup2$padj <- lspadj
   # 
   
-  #allResup2$log2Foldchange <- -log2(allResup2$log2Foldchange)
-  #return(TTtoAllres)
-  
-  #TTtoAllres %>% relocate(go_id,Term,Annotated,Significant,Expected, .before = logFC)
-  #TTtoAllres <- TTtoAllres[-c(3)]
-  
-  #ei.rows <- mclapply(allResup2$GenesSignificant, function (y) {
-  #  if (length(y)) as.list(xs[y,,drop=FALSE])
-  #  else as.list(rep(NA_real_, length(xs)))
-  #}, mc.cores = 10)
-  #ei <- mclapply(names(xs), function(z) {
-  #  lapply(ei.rows, "[[", z)
-  #}, mc.cores = 10)
-  #ei <- structure(ei, names = names(xs), row.names = seq(nrow(r)), class = "data.frame")
-  #row.names(ei) <- NULL
-  #allResup2 <- data.frame(allResup2, ei, stringsAsFactors = FALSE, check.names = FALSE)
-  
-  
-  
+
   
   
   x <- subset(allResup2,pvalCutOff <= 0.05 & Significant > 20)
   x <- x[order(-x$LogEnrich),]
   
-  cell.plot(x = setNames(x$LogEnrich,x$Term),
+   cell.plot(x = setNames(x$LogEnrich,x$Term),
             cells = x$log2Foldchange ,
             main = paste0(" GO enrichment (SiC vs SiC_TM) ",onto),
-            x.mar = c(.04, 0), 
+            x.mar = c(0.4, 0), 
             key.n = 7, 
-            y.mar = c(.08, 0), 
+            y.mar = c(0.1, 0), 
             cex = 1.6, 
-            cell.outer = 1, 
-            bar.scale = 0.0001,
-            space = 0.05) 
+            cell.outer = 3, 
+            bar.scale = 0.7, 
+            space = 0.09)
+  
   
  # dev.off()
 
   
 #  pdf(file = "/home/bjamshidikia/Desktop/BIOINFORMATICS_jacobi/graphs/cellplot/S3.pdf")
-  sym.plot( x= setNames(x$LogEnrich,x$Term),
+   sym.plot( x= setNames(x$LogEnrich,x$Term),
            cells = x$log2Foldchange,
             x.annotated = x$Annotated,
-            main = paste0(" GO enrichment (SiC vs SiC_TM) \n  ",onto),
+            main = paste0(" GO enrichment (SiC vs SiC_TM) ",onto),
             x.mar = c(0.47,0),
             key.n = 7,
             cex = 1.6,
             axis.cex = 0.8,
-            group.cex = 0.7
+            group.cex = 0.7,
+           y.mar = c(0.3, 0) 
+#           bar.scale = 0.2,
+#           space = 0.02
   )
+  
 }
 dev.off()  
   
