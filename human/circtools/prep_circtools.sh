@@ -19,6 +19,9 @@ fi
 SRC=${1}
 DEST=${2}
 
+echo $SRC " --- " $DEST
+
+
 if [ ! -d "$SRC" ]; then
   echo "Source directory $SRC does not exist!"
   exit;
@@ -31,13 +34,19 @@ fi
 
 cd $SRC/
 
-parallel ln -s `pwd`/{1}/mate{2}/Chimeric.out.junction ../$DEST/{1}.mate{2}.Chimeric.out.junction ::: * ::: 1 2
-parallel ln -s `pwd`/{1}/mate{2}/Aligned.noS.bam ../$DEST/{1}.mate{2}.bam ::: * ::: 1 2 
-parallel ln -s `pwd`/{1}/mate{2}/Aligned.noS.bam.bai ../$DEST/{1}.mate{2}.bam.bai ::: * ::: 1 2
-parallel ln -s `pwd`/{1}/Chimeric.out.junction ../$DEST/{1}.Chimeric.out.junction ::: * 
-parallel ln -s `pwd`/{1}/Aligned.noS.bam ../$DEST/{1}.bam ::: * 
-parallel ln -s `pwd`/{1}/Aligned.noS.bam.bai ../$DEST/{1}.bam.bai ::: *
-parallel ln -s `pwd`/{1}/SJ.out.tab ../$DEST/{1}.SJ.out.tab ::: *
+
+
+
+
+#parallel ln -s `pwd`/{1}/mate{2}/Chimeric.out.junction $DEST/{1}.mate{2}.Chimeric.out.junction ::: * ::: 1 2
+
+parallel ln -s `pwd`/{1}/mate{2}/Chimeric.out.junction $DEST/{1}.mate{2}.Chimeric.out.junction ::: * ::: 1 2
+parallel ln -s `pwd`/{1}/mate{2}/Aligned.noS.bam $DEST/{1}.mate{2}.bam ::: * ::: 1 2 
+parallel ln -s `pwd`/{1}/mate{2}/Aligned.noS.bam.bai $DEST/{1}.mate{2}.bam.bai ::: * ::: 1 2
+parallel ln -s `pwd`/{1}/Chimeric.out.junction $DEST/{1}.Chimeric.out.junction ::: * 
+parallel ln -s `pwd`/{1}/Aligned.noS.bam $DEST/{1}.bam ::: * 
+parallel ln -s `pwd`/{1}/Aligned.noS.bam.bai $DEST/{1}.bam.bai ::: *
+parallel ln -s `pwd`/{1}/SJ.out.tab $DEST/{1}.SJ.out.tab ::: *
 
 cd ..
 
