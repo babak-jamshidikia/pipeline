@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# @Author: Tobias Jakobi <tjakobi>
-# @Email:  tjakobi@arizona.edu
+# @Author: Babak Jamshidikia
+# @Email:  bjamshidkia@arizona.edu
 
 #SBATCH -n 1
 #SBATCH -N 1

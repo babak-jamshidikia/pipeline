@@ -1,8 +1,7 @@
 #!/bin/bash
 
-# @Author: Tobias Jakobi <tjakobi>
-# @Email:  tobias.jakobi@med.uni-heidelberg.de
-# @Project: University Hospital Heidelberg, Section of Bioinformatics and Systems Cardiology
+# @Author: Babak Jamshidikia
+# @Email:  bjamshidkia@arizona.edu
 # @License: CC BY-NC-SA
 
 #SBATCH -n 1
@@ -11,7 +10,7 @@
 #SBATCH --mem=60G
 #SBATCH -J "circtools alignment"
 #SBATCH --mail-type=END,FAIL,TIME_LIMIT_80
-#SBATCH --mail-user=tobias.jakobi@med.uni-heidelberg.de
+#SBATCH --mail-user=bjamshidikia@arizona.edu
 
 #module load star
 
@@ -50,35 +49,35 @@ OLD_PATH=`pwd`
 
 # main mapping part
 
-#STAR    --runThreadN 40\
-#          --genomeDir $1\
-#          --genomeLoad NoSharedMemory\
-#          --outTmpDir /scratch/global_tmp/${TMP_RND}_${target}/\
-#          --readFilesIn $2 $3\
-#          --readFilesCommand zcat\
-#          --outFileNamePrefix $4/$target/\
-#          --outReadsUnmapped Fastx\
-#          --outSAMattributes NH   HI   AS   nM   NM   MD   jM   jI   XS\
-#          --outSJfilterOverhangMin 15   15   15   15\
-#          --outFilterMultimapNmax 20\
-#          --outFilterScoreMin 1\
-#          --outFilterMatchNminOverLread 0.7\
-#          --outFilterMismatchNmax 999\
-#          --outFilterMismatchNoverLmax 0.05\
-#          --alignIntronMin 20\
-#          --alignIntronMax 1000000\
-#          --alignMatesGapMax 1000000\
-#          --alignSJoverhangMin 15\
-#          --alignSJDBoverhangMin 10\
-#          --alignSoftClipAtReferenceEnds No\
-#          --chimSegmentMin 15\
-#          --chimScoreMin 15\
-#          --chimScoreSeparation 10\
-#          --chimJunctionOverhangMin 15\
-#          --sjdbGTFfile $6\
-#          --quantMode GeneCounts\
-#          --twopassMode Basic\
-#          --chimOutType Junctions SeparateSAMold
+STAR    --runThreadN 40\
+          --genomeDir $1\
+          --genomeLoad NoSharedMemory\
+          --outTmpDir /scratch/global_tmp/${TMP_RND}_${target}/\
+          --readFilesIn $2 $3\
+          --readFilesCommand zcat\
+          --outFileNamePrefix $4/$target/\
+          --outReadsUnmapped Fastx\
+          --outSAMattributes NH   HI   AS   nM   NM   MD   jM   jI   XS\
+          --outSJfilterOverhangMin 15   15   15   15\
+          --outFilterMultimapNmax 20\
+          --outFilterScoreMin 1\
+          --outFilterMatchNminOverLread 0.7\
+          --outFilterMismatchNmax 999\
+          --outFilterMismatchNoverLmax 0.05\
+          --alignIntronMin 20\
+          --alignIntronMax 1000000\
+          --alignMatesGapMax 1000000\
+          --alignSJoverhangMin 15\
+          --alignSJDBoverhangMin 10\
+          --alignSoftClipAtReferenceEnds No\
+          --chimSegmentMin 15\
+          --chimScoreMin 15\
+          --chimScoreSeparation 10\
+          --chimJunctionOverhangMin 15\
+          --sjdbGTFfile $6\
+          --quantMode GeneCounts\
+          --twopassMode Basic\
+          --chimOutType Junctions SeparateSAMold
 
 
 

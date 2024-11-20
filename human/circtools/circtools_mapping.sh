@@ -1,4 +1,4 @@
- /bin/bash
+#! /bin/bash
 
 
 #/home/bjamshidkia/repositories/pipeline/human/2024_08_Human/s_star_pair.sh  /biodb/genomes/homo_sapiens >
