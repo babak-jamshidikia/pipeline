@@ -118,11 +118,11 @@ topDiffGenes <- function(allScore) {
 #funcGO <-function(ont,TopN,P_valcutoff,updown){
 #paper="a4"
 #pdf(file = "/home/bjamshidikia/Desktop/BIOINFORMATICS_jacobi/graphs/cellplot/allcellplotplot-15.pdf",height = 5.96, width = 10)
-pdf(file = "/home/bjamshidikia/Desktop/BIOINFORMATICS_jacobi/graphs/cellplot/allcellplotplot-15.pdf",paper="letter")
+pdf(file = "/home/bjamshidikia/Desktop/BIOINFORMATICS_jacobi/graphs/cellplot/allcell_arc_plotplot-1.pdf",width = 11,height = 8.5,pagecentre = TRUE)
 for(onto in c("BP","CC","MF")){
   
 
-ont = onto # "CC"
+ont = onto# "BP"
 TopN = 20
 P_valcutoff = 0.05
 updown = "both"
@@ -216,15 +216,15 @@ updown = "both"
   
    lsfc <- list()
    lspadj <- list()
-   i <- 1
+   j <- 1
    for(Gid in goidlist) {
     
   #  print(Gid)
      Fgoid <-  filter(TTgoid,TTgoid$GO.ID == Gid)
     #print(Fgoid)
-     lsfc[i] <- list(Fgoid$logFC)
-     lspadj[i] <- list(Fgoid$FDR)
-     i <- i +1
+     lsfc[j] <- list(Fgoid$logFC)
+     lspadj[j] <- list(Fgoid$FDR)
+     j <- j +1
      }
   #print(i)
   
@@ -252,10 +252,10 @@ updown = "both"
     cell.plot(x = setNames(x$LogEnrich,x$Term),
              cells = x$log2Foldchange ,
              main = paste0(" GO enrichment (SiC vs SiC_TM) ",onto),
-             x.mar = c(0.4, 0), 
+             x.mar = c(0.7, 0), 
              key.n = 7, 
              y.mar = c(0.1, 0), 
-             cex = 1.6, 
+             cex = 0.1, 
              cell.outer = 3, 
              bar.scale = 0.7, 
              space = 0.09)
@@ -269,7 +269,7 @@ updown = "both"
             cells = x$log2Foldchange,
              x.annotated = x$Annotated,
              main = paste0(" GO enrichment (SiC vs SiC_TM) ",onto),
-             x.mar = c(0.47,0),
+             x.mar = c(0.7,0),
              key.n = 7,
              cex = 1.6,
              axis.cex = 0.8,
@@ -279,11 +279,21 @@ updown = "both"
           #space = 1
    )
   
+#i <- 0
+xmar <- c(1,0)    
+if (ont == "MF" | ont == "CC" ){xmar <- c(0.7,0)}
+    
+x$up <- lapply(Map(setNames, x$log2Foldchange, x$GenesSignificant), function (i) { i[i>0] })
+x$dwn <- lapply(Map(setNames, x$log2Foldchange, x$GenesSignificant), function (i) { i[i<0] })
+arc.plot(x = setNames(x$LogEnrich, x$Term),
+     main = paste0(" GO Term Analysis (SiC vs SiC_TM) ",onto),
+     up.list = x$up, 
+     down.list = x$dwn, 
+     x.mar = xmar
+     )
 }
 dev.off()  
-  
-  
-  
+
 
 
 
